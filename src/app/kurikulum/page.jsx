@@ -64,7 +64,7 @@ export default function Curriculum() {
             </div>
           </div>
         </div>
-        <div className="mt-8 flex w-full flex-col items-center gap-6 rounded-30 bg-[#5EB3B8] px-7 py-8 text-center md:mt-10 md:gap-12 md:px-40 md:py-12">
+        <div className="mt-8 flex w-full flex-col items-center gap-6 rounded-30 bg-[#5EB3B8] px-7 py-8 text-center drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)] md:mt-10 md:gap-12 md:px-40 md:py-12">
           <h1 className="text-xl font-semibold text-white md:text-3xl">Daftar Sekarang dan Dapatkan Potongan Harga</h1>
           <Button className="w-full rounded-full bg-white font-semibold text-[#028A92] hover:text-white">
             Daftar Sekarang
