@@ -22,6 +22,10 @@ const Navbar = () => {
     }
   }, [router]);
 
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, []);
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -61,10 +65,10 @@ const Navbar = () => {
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute mt-[100px] block w-48 rounded-md border bg-white shadow-lg">
-                    <Link href="/tatap-muka" className="block px-4 py-2 hover:text-primary">
+                    <Link href="/program-bimbingan/tatap-muka" className="block px-4 py-2 hover:text-primary">
                       Tatap Muka
                     </Link>
-                    <Link href="/konsultasi-tugas" className="block px-4 py-2 hover:text-primary">
+                    <Link href="/program-bimbingan/konsultasi-tugas" className="block px-4 py-2 hover:text-primary">
                       Konsultasi Tugas
                     </Link>
                   </div>
@@ -120,13 +124,13 @@ const Navbar = () => {
               {isDropdownOpen && (
                 <div className={`${isDropdownOpen ? 'animate-slide-down' : 'animate-slide-up'} pl-5`}>
                   <Link
-                    href="/tatap-muka"
+                    href="/program-bimbingan/tatap-muka"
                     className={`${router === '/program-bimbingan/tatap-muka' && 'text-primary'} block px-4 py-2 hover:text-primary`}
                   >
                     Tatap Muka
                   </Link>
                   <Link
-                    href="/konsultasi-tugas"
+                    href="/program-bimbingan/konsultasi-tugas"
                     className={`${router === '/program-bimbingan/konsultasi-tugas' && 'text-primary'} block px-4 py-2 hover:text-primary`}
                   >
                     Konsultasi Tugas
