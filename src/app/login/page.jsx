@@ -2,21 +2,36 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
+import { useStore } from '@/stores/store';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import LoginImg from '@/../public/login.png';
 
 export default function Login() {
+  const { account, setLogin, isLogin } = useStore();
+  const router = useRouter();
+
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('berhasil');
+
+    const findAccount = account.find(item => item.email === e.target.email.value);
+    if (!findAccount) {
+      setLogin(true);
+      router.push('/');
+    } else if (findAccount.role === 'pemilik' || findAccount.role === 'admin') {
+      setLogin(true);
+      router.push('/admin/dashboard');
+    }
   };
 
+  console.log(isLogin);
+
   return (
-    <main className="flex w-full bg-white md:h-screen md:max-h-[850px]">
-      <div className="container mx-auto flex items-center justify-center pt-20 md:pt-0">
+    <main className="flex w-full bg-white">
+      <div className="container mx-auto flex items-center justify-center pt-20 md:pt-14">
         <div className="flex items-center rounded-[20px] border border-black border-opacity-50 px-8 py-6 md:px-0 md:py-0">
           <div className="md:w-1/2 md:px-24">
             <h1 className="text-center text-2xl font-bold text-[#0A4584] md:text-3xl">Login</h1>

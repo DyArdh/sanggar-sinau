@@ -117,3 +117,18 @@
   z-index: 1000;
   background-color: white;
 }
+
+@media print {
+  body {
+    background-color: white;
+  }
+
+  .no-print {
+    display: none;
+  }
+
+  .printable {
+    margin: 0;
+    box-shadow: none;
+  }
+}

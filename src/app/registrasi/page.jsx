@@ -1,20 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 export default function Register() {
+  const router = useRouter();
+
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('berhasil');
+    router.push(`/verify?email=${e.target.email.value}`);
   };
 
   return (
-    <section className="flex w-full bg-white md:h-screen md:max-h-[850px]">
-      <div className="container mx-auto flex items-center justify-center pb-12 pt-14 md:gap-8 md:pb-0 md:pt-0 lg:px-16">
+    <section className="flex w-full bg-white">
+      <div className="container mx-auto flex items-center justify-center pb-12 pt-5 md:gap-8 md:pb-0 md:pt-14 lg:px-16">
         <div className="rounded-[20px] border-black border-opacity-50 py-10 md:border">
           <h1 className="text-center text-2xl font-bold text-[#0A4584] md:text-3xl">Registrasi Akun</h1>
           <form className="mt-7 flex flex-col gap-5 md:mx-32 md:mt-10" onSubmit={handleSubmit}>

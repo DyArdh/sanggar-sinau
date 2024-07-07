@@ -4,30 +4,35 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import IconButton from './IconButton';
+import ChevronDown from '@/components/icons/ChevronDown';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import Logo from '@/../public/logo.png';
+import { useStore } from '@/stores/store';
+import User from '@/components/icons/User';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const router = usePathname();
+  const { isLogin, setLogin } = useStore();
 
   useEffect(() => {
-    if (router === '/program-bimbingan/tatap-muka') {
+    if (router === '/program-bimbingan/tatap-muka' || router === '/program-bimbingan/konsultasi-tugas') {
       setIsDropdownOpen(true);
-    } else if (router === '/program-bimbingan/konsultasi-tugas') {
-      setIsDropdownOpen(true);
+    } else {
+      setIsDropdownOpen(false);
     }
   }, [router]);
 
-  useEffect(() => {
-    setIsDropdownOpen(false);
-  }, []);
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
   const handleDropdownMouseEnter = () => {
@@ -38,14 +43,22 @@ const Navbar = () => {
     setIsDropdownOpen(false);
   };
 
+  const handleProfileDropdownMouseEnter = () => {
+    setIsProfileDropdownOpen(true);
+  };
+
+  const handleProfileDropdownMouseLeave = () => {
+    setIsProfileDropdownOpen(false);
+  };
+
   return (
     <div className="sticky-container bg-white shadow">
       <nav className="container mx-auto px-4 py-3 md:px-16">
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
+          <Link href="/" className="flex items-center">
             <Image src={Logo} alt="Logo" className="h-8 w-8" />
             <span className="ml-2 font-comfortaa text-lg font-bold text-primary md:text-xl">Sanggar Ilmu</span>
-          </div>
+          </Link>
           <div className="hidden items-center space-x-5 font-medium md:flex">
             <Link href="/" className={`${router === '/' ? 'text-primary' : 'hover:text-primary'}`}>
               Beranda
@@ -57,11 +70,14 @@ const Navbar = () => {
             >
               <div className="flex items-center">
                 <button
-                  className={`${isDropdownOpen ? 'text-primary' : 'hover:text-primary'}`}
+                  className={`${router.includes('/program-bimbingan') ? 'text-primary' : 'hover:text-primary'} flex items-center gap-x-2`}
                   onClick={toggleDropdown}
                   aria-expanded={isDropdownOpen}
                 >
-                  Program Bimbingan
+                  Program Bimbingan{' '}
+                  <span>
+                    <ChevronDown className="h-4 w-4" />
+                  </span>
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute mt-[100px] block w-48 rounded-md border bg-white shadow-lg">
@@ -78,16 +94,48 @@ const Navbar = () => {
             <Link href="/pengajar" className={`${router === '/pengajar' ? 'text-primary' : 'hover:text-primary'}`}>
               Pengajar
             </Link>
-            <Link
-              href="/jadwal-kelas"
-              className={`${router === '/jadwal-kelas' ? 'text-primary' : 'hover:text-primary'}`}
-            >
-              Jadwal Kelas
-            </Link>
+            {isLogin ? (
+              <Link
+                href="/jadwal-kelas"
+                className={`${router === '/jadwal-kelas' ? 'text-primary' : 'hover:text-primary'}`}
+              >
+                Jadwal Kelas
+              </Link>
+            ) : (
+              ''
+            )}
             <Link href="/kurikulum" className={`${router === '/kurikulum' ? 'text-primary' : 'hover:text-primary'}`}>
               Kurikulum
             </Link>
-            <Button className="rounded-[30px] px-8 font-semibold">Daftar</Button>
+            {isLogin ? (
+              <div
+                className="relative"
+                onMouseEnter={handleProfileDropdownMouseEnter}
+                onMouseLeave={handleProfileDropdownMouseLeave}
+              >
+                <User className="h-7 w-7 cursor-pointer text-primary" onClick={toggleProfileDropdown} />
+                {isProfileDropdownOpen && (
+                  <div className="absolute right-0 w-40 rounded-md border bg-white shadow-lg">
+                    <Link href="/profile" className="block px-4 py-2 hover:text-primary">
+                      Profile
+                    </Link>
+                    <Link href="/riwayat-pendaftaran" className="block px-4 py-2 hover:text-primary">
+                      Riwayat Pendaftaran
+                    </Link>
+                    <button
+                      className="block w-full px-4 py-2 text-left hover:text-primary"
+                      onClick={() => setLogin(false)}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link href="/registrasi">
+                <Button className="rounded-[30px] px-8 font-semibold">Daftar</Button>
+              </Link>
+            )}
           </div>
           <IconButton className="text-gray-700 md:hidden" onClick={() => setIsOpen(!isOpen)}>
             <svg
@@ -116,10 +164,13 @@ const Navbar = () => {
                 Beranda
               </Link>
               <div
-                className={`${isDropdownOpen && 'text-primary'} block w-full cursor-pointer px-4 py-2 text-left hover:text-primary`}
+                className={`${isDropdownOpen && 'text-primary'} flex w-full cursor-pointer items-center justify-between px-4 py-2 text-left hover:text-primary`}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
-                Program Bimbingan
+                Program Bimbingan{' '}
+                <span>
+                  <ChevronDown />
+                </span>
               </div>
               {isDropdownOpen && (
                 <div className={`${isDropdownOpen ? 'animate-slide-down' : 'animate-slide-up'} pl-5`}>
@@ -146,7 +197,45 @@ const Navbar = () => {
               <Link href="/kurikulum" className="block px-4 py-2 hover:bg-gray-100">
                 Kurikulum
               </Link>
-              <Button className="w-full">Daftar</Button>
+              {isLogin ? (
+                <div className="relative">
+                  <button
+                    className="flex w-full items-center justify-between px-4 py-2 text-left hover:text-primary"
+                    onClick={toggleProfileDropdown}
+                  >
+                    Profile
+                    <span>
+                      <ChevronDown />
+                    </span>
+                  </button>
+                  {isProfileDropdownOpen && (
+                    <div className={`${isProfileDropdownOpen ? 'animate-slide-down' : 'animate-slide-up'} pl-5`}>
+                      <Link
+                        href="/profile"
+                        className={`${router === '/profile' && 'text-primary'} block px-4 py-2 hover:text-primary`}
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        href="/riwayat-pendaftaran"
+                        className={`${router === '/riwayat-pendaftaran' && 'text-primary'} block px-4 py-2 hover:text-primary`}
+                      >
+                        Riwayat Pendaftaran
+                      </Link>
+                      <button
+                        className="block w-full px-4 py-2 text-left hover:text-primary"
+                        onClick={() => setLogin(false)}
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link href="/registrasi">
+                  <Button className="w-full">Daftar</Button>
+                </Link>
+              )}
             </>
           )}
         </div>

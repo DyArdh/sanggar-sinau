@@ -2,7 +2,6 @@ import { Comfortaa, Montserrat } from 'next/font/google';
 import '@/styles/globals.css';
 
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat' });
 const comfortaa = Comfortaa({ subsets: ['latin'], variable: '--font-comfortaa' });
@@ -15,11 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${comfortaa.variable}`}>
-      <body>
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
