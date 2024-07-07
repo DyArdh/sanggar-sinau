@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import formatToIDR from '@/lib/formatToIDR';
@@ -10,9 +11,11 @@ export default function History() {
   const router = useRouter();
   const { riwayatDaftar, isLogin } = useStore();
 
-  if (!isLogin) {
-    router.push('/login');
-  }
+  useEffect(() => {
+    if (!isLogin && typeof window !== 'undefined') {
+      router.push('/login');
+    }
+  }, [isLogin, router]);
 
   return (
     <>

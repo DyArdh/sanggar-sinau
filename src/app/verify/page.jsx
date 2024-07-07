@@ -1,13 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 import Logo from '@/../public/logo.png';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
-export default function Verify() {
+function VerifyCode() {
   const [code, setCode] = useState();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -46,5 +46,13 @@ export default function Verify() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function Verify() {
+  return (
+    <Suspense>
+      <VerifyCode />
+    </Suspense>
   );
 }

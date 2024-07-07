@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Banner from '@/../public/banner_jadwal_kelas.png';
@@ -13,9 +13,11 @@ export default function ClassSchedule() {
   const { isLogin, sesi, jadwalTatapMuka, jadwalKonsultasi } = useStore();
   const router = useRouter();
 
-  if (!isLogin) {
-    router.push('/login');
-  }
+  useEffect(() => {
+    if (!isLogin && typeof window !== 'undefined') {
+      router.push('/login');
+    }
+  }, [isLogin, router]);
 
   return (
     <>

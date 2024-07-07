@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Label } from '@/components/ui/label';
@@ -17,9 +18,11 @@ export default function DaftarKelas() {
   const router = useRouter();
   const { isLogin } = useStore();
 
-  if (!isLogin) {
-    router.push('/login');
-  }
+  useEffect(() => {
+    if (!isLogin && typeof window !== 'undefined') {
+      router.push('/login');
+    }
+  }, [isLogin, router]);
 
   const handleSubmit = e => {
     e.preventDefault();

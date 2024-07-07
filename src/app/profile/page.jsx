@@ -1,15 +1,17 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import User from '@/components/icons/User';
 import Pencil from '@/components/icons/Pencil';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useStore } from '@/stores/store';
 
 export default function Profile() {
   const router = useRouter();
+  const { isLogin } = useStore();
   const [parentName, setParentName] = useState('Karina Aespa');
   const [childName, setChildName] = useState('Winter Aespa');
   const [email, setEmail] = useState('karinaespa@gmail.com');
@@ -20,9 +22,11 @@ export default function Profile() {
   const [editMode3, setEditMode3] = useState(false);
   const [editMode4, setEditMode4] = useState(false);
 
-  if (isLogin) {
-    router.push('/login');
-  }
+  useEffect(() => {
+    if (!isLogin && typeof window !== 'undefined') {
+      router.push('/login');
+    }
+  }, [isLogin, router]);
 
   return (
     <>
