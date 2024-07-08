@@ -73,37 +73,109 @@ export default function FaceToFace() {
               </span>
             </div>
             <div className="flex flex-col items-center gap-5 bg-none drop-shadow-none md:gap-0 md:bg-[#F9F9F9] md:drop-shadow-[0_0_4px_rgba(0,0,0,0.25)]">
-              <p className="text-center text-base font-semibold text-opacity-80 md:py-5 md:text-lg">
-                Rp 150.000 / Bulan
-              </p>
-              <div className="flex flex-col justify-center gap-5 md:flex-row">
-                <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
-                  <div className="flex justify-center">
-                    <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+              {category === 'PAUD' ? (
+                <div>
+                  <p className="text-center text-base font-semibold text-opacity-80 md:py-5 md:text-lg">
+                    Rp 150.000 / Bulan
+                  </p>
+                  <div className="flex flex-col justify-center gap-5 md:flex-row">
+                    <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
+                      <div className="flex justify-center">
+                        <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+                      </div>
+                      <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
+                        Pembelajaran Dasar
+                      </h1>
+                      <ol className="list-decimal pl-5">
+                        <li>Membaca huruf dan kata sederhana</li>
+                        <li>Menulis angka dan huruf</li>
+                        <li>Mengenal bentuk dan warna</li>
+                      </ol>
+                    </div>
+                    <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
+                      <div className="flex justify-center">
+                        <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+                      </div>
+                      <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
+                        Keterampilan Sosial
+                      </h1>
+                      <ol className="list-decimal pl-5">
+                        <li>Bermain peran dan kegiatan kelompok</li>
+                        <li>Belajar berbagi dan bergantian</li>
+                        <li>Mengembangkan keterampilan komunikasi</li>
+                      </ol>
+                    </div>
                   </div>
-                  <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
-                    Pembelajaran Dasar
-                  </h1>
-                  <ol className="list-decimal pl-5">
-                    <li>Membaca huruf dan kata sederhana</li>
-                    <li>Menulis angka dan huruf</li>
-                    <li>Mengenal bentuk dan warna</li>
-                  </ol>
                 </div>
-                <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
-                  <div className="flex justify-center">
-                    <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+              ) : category === 'TK' ? (
+                <div>
+                  <p className="text-center text-base font-semibold text-opacity-80 md:py-5 md:text-lg">
+                    Rp 150.000 / Bulan
+                  </p>
+                  <div className="flex flex-col justify-center gap-5 md:flex-row">
+                    <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
+                      <div className="flex justify-center">
+                        <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+                      </div>
+                      <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
+                        Pengembangan Kognitif
+                      </h1>
+                      <ol className="list-decimal pl-5">
+                        <li>Mengenal huruf dan angka</li>
+                        <li>Pemahaman dasar matematika (berhitung sederhana)</li>
+                        <li>Pengenalan lingkungan sekitar</li>
+                      </ol>
+                    </div>
+                    <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
+                      <div className="flex justify-center">
+                        <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+                      </div>
+                      <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
+                        Keterampilan Motorik
+                      </h1>
+                      <ol className="list-decimal pl-5">
+                        <li>Kegiatan fisik dan permainan</li>
+                        <li>Melatih koordinasi tangan dan mata</li>
+                        <li>Kegiatan seni untuk motorik halus</li>
+                      </ol>
+                    </div>
                   </div>
-                  <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
-                    Keterampilan Sosial
-                  </h1>
-                  <ol className="list-decimal pl-5">
-                    <li>Bermain peran dan kegiatan kelompok</li>
-                    <li>Belajar berbagi dan bergantian</li>
-                    <li>Mengembangkan keterampilan komunikasi</li>
-                  </ol>
                 </div>
-              </div>
+              ) : (
+                <div>
+                  <p className="text-center text-base font-semibold text-opacity-80 md:py-5 md:text-lg">
+                    Rp 150.000 / Bulan
+                  </p>
+                  <div className="flex flex-col justify-center gap-5 md:flex-row">
+                    <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
+                      <div className="flex justify-center">
+                        <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+                      </div>
+                      <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
+                        Pembelajaran Dasar
+                      </h1>
+                      <ol className="list-decimal pl-5">
+                        <li>Membaca huruf dan kata sederhana</li>
+                        <li>Menulis angka dan huruf</li>
+                        <li>Mengenal bentuk dan warna</li>
+                      </ol>
+                    </div>
+                    <div className="rounded-[15px] bg-white p-6 drop-shadow-[0_0_4px_rgba(0,0,0,0.25)] md:max-w-sm">
+                      <div className="flex justify-center">
+                        <Image src={Image2} className="md:w-72" alt="Program Tatap Muka" />
+                      </div>
+                      <h1 className="my-4 text-center text-base font-semibold text-[#0A4584] md:my-5 md:text-lg">
+                        Keterampilan Sosial
+                      </h1>
+                      <ol className="list-decimal pl-5">
+                        <li>Bermain peran dan kegiatan kelompok</li>
+                        <li>Belajar berbagi dan bergantian</li>
+                        <li>Mengembangkan keterampilan komunikasi</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              )}
               <Button className="my-3 w-full rounded-full font-semibold md:my-5 md:w-2/3 md:text-lg">
                 Lihat Lokasi
               </Button>
