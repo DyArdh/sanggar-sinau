@@ -6,9 +6,9 @@ export default function AdminLayout({ children }) {
   return (
     <>
       <Header />
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-hidden px-8 pt-20">{children}</main>
+        <main className="flex-1 overflow-hidden px-8 py-20">{children}</main>
         <Toaster />
       </div>
     </>

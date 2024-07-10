@@ -1,28 +1,33 @@
 import { create } from 'zustand';
 
+import PengajarIMG from '@/../public/section5-1.png';
+
 export const useStore = create((set) => ({
   isLogin: false,
   account: [
     {
       id: 1,
-      name: 'Pemilik',
+      nama: 'Pemilik',
       email: 'pemilik@sanngarsinau.com',
       password: 'pemilik123',
+      telp: '081234567890',
       role: 'pemilik',
     },
     {
       id: 2,
-      name: 'Admin',
-      email: 'admin@sanngarsinau.com',
+      nama: 'Admin1',
+      email: 'admin1@sanngarsinau.com',
       password: 'admin123',
+      telp: '081234567890',
       role: 'admin',
     },
     {
       id: 3,
-      name: 'Admin',
-      email: 'admin@sanngarsinau.com',
+      nama: 'Admin2',
+      email: 'admin2@sanngarsinau.com',
       password: 'admin123',
-      role: 'pelanggan',
+      telp: '081234567890',
+      role: 'admin',
     },
   ],
   programTatapMuka: [
@@ -45,32 +50,17 @@ export const useStore = create((set) => ({
       lokasi: 'Jl. Tempurejo Wonojati',
     },
   ],
-  programKonsultasi: [],
+  programKonsultasi: [
+    {
+      id: 1,
+      jenjang: 'SD/MI',
+      harga: '100000',
+      lokasi: 'Jl. Tempurejo Wonojati',
+    },
+  ],
   riwayatDaftar: [
     {
       invoice: "INV-873218-2313213",
-      tgl: '2022-01-01',
-      namaOrangtua: 'Budi',
-      email: 'budi@gmail.com',
-      telp: '081234567890',
-      namaAnak: 'Ardi',
-      program: 'Tatap Muka',
-      jenjang: 'SD/MI',
-      total: '200000'
-    },
-    {
-      invoice: "INV-873231-241241213",
-      tgl: '2022-01-01',
-      namaOrangtua: 'Budi',
-      email: 'budi@gmail.com',
-      telp: '081234567890',
-      namaAnak: 'Ardi',
-      program: 'Tatap Muka',
-      jenjang: 'SD/MI',
-      total: '200000'
-    },
-    {
-      invoice: "INV-874218-24124113",
       tgl: '2022-01-01',
       namaOrangtua: 'Budi',
       email: 'budi@gmail.com',
@@ -158,6 +148,123 @@ export const useStore = create((set) => ({
           jam: '18.15 sd 19.10',
         },
       ]
+    }
+  ],
+  pendaftaran: [
+    {
+      id: 1,
+      nama_orangtua: 'Budi',
+      nama_anak: 'Ardi',
+      jenjang: 'SD/MI',
+      program: 'Tatap Muka',
+      status: 'Terverifikasi',
+    },
+    {
+      id: 2,
+      nama_orangtua: 'Budi',
+      nama_anak: 'Ardi',
+      jenjang: 'SD/MI',
+      program: 'Tatap Muka',
+      status: 'Terverifikasi',
+    },
+    {
+      id: 3,
+      nama_orangtua: 'Budi',
+      nama_anak: 'Ardi',
+      jenjang: 'SD/MI',
+      program: 'Tatap Muka',
+      status: 'Verifikasi',
+    },
+  ],
+  pengajar: [
+    {
+      id: 1,
+      nama: 'Rina Putri',
+      pendidikan: 'Mahasiswa FKIP UNEJ',
+      pengajar_jenjang: 'PAUD',
+      telp: '081234567890',
+      lokasi_mengajar: 'Jl. Tempurejo Wonojati',
+      image: PengajarIMG,
+    },
+    {
+      id: 2,
+      nama: 'Rina Putri',
+      pendidikan: 'Mahasiswa FKIP UNEJ',
+      pengajar_jenjang: 'TK',
+      telp: '081234567890',
+      lokasi_mengajar: 'Jl. Tempurejo Wonojati',
+      image: PengajarIMG,
+    },
+    {
+      id: 3,
+      nama: 'Rina Putri',
+      pendidikan: 'Mahasiswa FKIP UNEJ',
+      pengajar_jenjang: 'SD/MI',
+      telp: '081234567890',
+      lokasi_mengajar: 'Jl. Tempurejo Wonojati',
+      image: PengajarIMG,
+    },
+  ],
+  jadwalKelas: [{
+    id: 1,
+    sesi: 'Sesi Siang',
+    hari: {
+      mulai: 'Senin',
+      selesai: 'Jum\'at',
+    },
+    jam: {
+      mulai: '11:00',
+      selesai: '12:00',
+    },
+  },{
+    id: 2,
+    sesi: 'Sesi Sore',
+    hari: {
+      mulai: 'Senin',
+      selesai: 'Jum\'at',
+    },
+    jam: {
+      mulai: '15:15',
+      selesai: '16:10',
+    },
+  },
+  {
+    id: 3,
+    sesi: 'Sesi Malam',
+    hari: {
+      mulai: 'Senin',
+      selesai: 'Jum\'at',
+    },
+    jam: {
+      mulai: '18:15',
+      selesai: '19:10',
+    },
+  }
+],
+  jadwalKonsultasi: [
+    {
+      id: 1,
+      sesi: 'Sesi Sore',
+      hari: {
+        mulai: 'Senin',
+        selesai: 'Jum\'at',
+      },
+      jam: {
+        mulai: '15:15',
+        selesai: '16:10',
+      },
+    },
+    {
+      id: 2,
+      sesi: 'Sesi Malam',
+      hari: {
+        mulai: 'Senin',
+        selesai: 'Jum\'at',
+      },
+      jam: {
+        mulai: '18:15',
+        selesai: '19:10',
+      },
     }
   ],
   setLogin: () => set((state) => ({ isLogin: !state.isLogin })),

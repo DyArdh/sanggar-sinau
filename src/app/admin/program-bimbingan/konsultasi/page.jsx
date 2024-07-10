@@ -15,23 +15,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useToast } from '@/components/ui/use-toast';
 import DataTable from '@/components/DataTable';
 import Plus from '@/components/icons/Plus';
-import DialogWrapper from '@/components/DialogWrapper';
-import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
-import AddProgram from './AddProgram';
-import EditProgram from './EditProgram';
-import DeleteProgram from './DeleteProgram';
+import AddProgram from './AddProgramKonsultasi';
+import EditProgram from './EditProgramKonsultasi';
+import DeleteProgram from './DeleteProgramKonsultasi';
 
-export default function ProgramBimbingan() {
-  const { programTatapMuka } = useStore();
+export default function Konsultasi() {
+  const { programKonsultasi } = useStore();
   const [addProgramDialog, setAddProgramDialog] = useState(false);
   const [editProgramDialog, setEditProgramDialog] = useState(false);
   const [deleteProgramDialog, setDeleteProgramDialog] = useState(false);
   const [currentProgram, setCurrentProgram] = useState(null);
-  const { toast } = useToast();
 
   const Columns = [
     {
@@ -106,14 +102,17 @@ export default function ProgramBimbingan() {
   return (
     <>
       <section>
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-thirdary">Program Bimbingan</h1>
-          <Button className="flex items-center gap-2 px-6" onClick={() => setAddProgramDialog(!addProgramDialog)}>
-            <Plus />
-            <span className="font-semibold">Tambah</span>
-          </Button>
+        <h1 className="text-3xl font-bold text-thirdary">Program Bimbingan</h1>
+        <div className="mt-8 rounded-md border-2 border-dashed border-thirdary p-5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-thirdary">Program Konsultasi Tugas</h2>
+            <Button className="flex items-center gap-2 px-6" onClick={() => setAddProgramDialog(!addProgramDialog)}>
+              <Plus />
+              <span className="font-semibold">Tambah</span>
+            </Button>
+          </div>
+          <DataTable columns={Columns} data={programKonsultasi} className="mt-7" />
         </div>
-        <DataTable columns={Columns} data={programTatapMuka} className="mt-7" />
       </section>
       <AddProgram isOpen={addProgramDialog} setIsOpen={setAddProgramDialog} onSubmit={handleAddProgramSubmit} />
       <EditProgram
