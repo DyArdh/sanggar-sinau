@@ -53,7 +53,7 @@ export default function Login() {
                   Password
                 </Label>
                 <Input
-                  type="text"
+                  type="password"
                   id="password"
                   name="password"
                   className="border-black border-opacity-50"
