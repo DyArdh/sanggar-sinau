@@ -57,7 +57,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center">
             <Image src={Logo} alt="Logo" className="h-8 w-8" />
-            <span className="ml-2 font-comfortaa text-lg font-bold text-primary md:text-xl">Sanggar Ilmu</span>
+            <span className="ml-2 font-comfortaa text-lg font-bold text-primary md:text-xl">Sanggar Sinau</span>
           </Link>
           <div className="hidden items-center space-x-5 font-medium md:flex">
             <Link href="/" className={`${router === '/' ? 'text-primary' : 'hover:text-primary'}`}>
