@@ -35,7 +35,7 @@ export default function TatapMuka() {
       header: 'No',
     },
     {
-      accessorKey: 'nama',
+      accessorKey: 'nama_lengkap',
       header: 'Nama',
     },
     {

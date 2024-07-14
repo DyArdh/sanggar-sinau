@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useToast } from '@/components/ui/use-toast';
 import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -7,117 +7,120 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
 export default function AddPengajar({ isOpen, setIsOpen, onSubmit }) {
-  const [formData, setFormData] = useState({
-    nama: '',
-    pendidikan: '',
-    pengajar_jenjang: '',
-    telp: '',
-    lokasi_mengajar: '',
-    image: '',
-  });
-
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const { toast } = useToast();
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = () => {
-    onSubmit(formData);
+  const onSubmitForm = data => {
+    onSubmit(data);
     toast({
       description: 'Data pengajar telah ditambahkan',
       className: 'bg-green-500 text-white font-medium',
     });
     setIsOpen(false);
+    reset();
   };
 
   return (
     <DialogWrapper isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTitle className="mt-5 text-xl">Tambah Data Pengajar</DialogTitle>
-      <DialogDescription>Silahkan isi data dibawah ini</DialogDescription>
-      <div className="flex flex-col space-y-5 pt-3">
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="nama" className="font-semibold">
-            Nama
-          </Label>
-          <Input
-            type="text"
-            id="nama"
-            name="nama"
-            placeholder="Rina Putri"
-            value={formData.nama}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="pendidikan" className="font-semibold">
-            Pendidikan
-          </Label>
-          <Input
-            type="text"
-            id="pendidikan"
-            name="pendidikan"
-            placeholder="Mahasiswa FKIP UNEJ"
-            value={formData.pendidikan}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="pengajar_jenjang" className="font-semibold">
-            Pengajar Jenjang
-          </Label>
-          <Input
-            type="text"
-            id="pengajar_jenjang"
-            name="pengajar_jenjang"
-            placeholder="SD/MI"
-            value={formData.pengajar_jenjang}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="telp" className="font-semibold">
-            No. HP
-          </Label>
-          <Input
-            type="text"
-            id="telp"
-            name="telp"
-            placeholder="085123456789"
-            value={formData.telp}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="lokasi_mengajar" className="font-semibold">
-            Lokasi Mengajar
-          </Label>
-          <Input
-            type="text"
-            id="lokasi_mengajar"
-            name="lokasi_mengajar"
-            placeholder="Jl. Tempurejo Wonojati"
-            value={formData.lokasi_mengajar}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="image" className="font-semibold">
-            Image
-          </Label>
-          <Input type="file" id="image" name="image" value={formData.image} onChange={handleChange} />
-        </div>
+      <div className="max-h-[80vh] overflow-y-auto p-5">
+        <DialogTitle className="mt-5 text-xl">Tambah Data Pengajar</DialogTitle>
+        <DialogDescription>Silahkan isi data dibawah ini</DialogDescription>
+        <form onSubmit={handleSubmit(onSubmitForm)}>
+          <div className="flex flex-col space-y-5 pt-3">
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="nama_lengkap" className="font-semibold">
+                Nama Lengkap
+              </Label>
+              <Input
+                type="text"
+                id="nama_lengkap"
+                {...register('nama_lengkap', { required: 'Nama Lengkap wajib diisi' })}
+                placeholder="Rina Putri"
+              />
+              {errors.nama_lengkap && <span className="text-sm text-red-500">{errors.nama_lengkap.message}</span>}
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="ttl" className="font-semibold">
+                TTL
+              </Label>
+              <Input
+                type="text"
+                id="ttl"
+                {...register('ttl', { required: 'TTL wajib diisi' })}
+                placeholder="Jember, 1 Januari 2000"
+              />
+              {errors.ttl && <span className="text-sm text-red-500">{errors.ttl.message}</span>}
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="pendidikan" className="font-semibold">
+                Pendidikan
+              </Label>
+              <Input
+                type="text"
+                id="pendidikan"
+                {...register('pendidikan', { required: 'Pendidikan wajib diisi' })}
+                placeholder="Mahasiswa FKIP UNEJ"
+              />
+              {errors.pendidikan && <span className="text-sm text-red-500">{errors.pendidikan.message}</span>}
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="pengajar_jenjang" className="font-semibold">
+                Pengajar Jenjang
+              </Label>
+              <Input
+                type="text"
+                id="pengajar_jenjang"
+                {...register('pengajar_jenjang', { required: 'Pengajar Jenjang wajib diisi' })}
+                placeholder="SD/MI"
+              />
+              {errors.pengajar_jenjang && (
+                <span className="text-sm text-red-500">{errors.pengajar_jenjang.message}</span>
+              )}
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="telp" className="font-semibold">
+                No. Telp/HP
+              </Label>
+              <Input
+                type="text"
+                id="telp"
+                {...register('telp', { required: 'No. HP wajib diisi' })}
+                placeholder="085123456789"
+              />
+              {errors.telp && <span className="text-sm text-red-500">{errors.telp.message}</span>}
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="lokasi_mengajar" className="font-semibold">
+                Lokasi Mengajar
+              </Label>
+              <Input
+                type="text"
+                id="lokasi_mengajar"
+                {...register('lokasi_mengajar', { required: 'Lokasi Mengajar wajib diisi' })}
+                placeholder="Jl. Tempurejo Wonojati"
+              />
+              {errors.lokasi_mengajar && <span className="text-sm text-red-500">{errors.lokasi_mengajar.message}</span>}
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="image" className="font-semibold">
+                Image
+              </Label>
+              <Input type="file" id="image" {...register('image')} />
+            </div>
+          </div>
+          <DialogFooter className="pt-10">
+            <Button variant="outline" onClick={() => setIsOpen(false)}>
+              Batal
+            </Button>
+            <Button type="submit">Simpan</Button>
+          </DialogFooter>
+        </form>
       </div>
-      <DialogFooter className="pt-10">
-        <Button variant="outline" onClick={() => setIsOpen(false)}>
-          Batal
-        </Button>
-        <Button onClick={handleSubmit}>Simpan</Button>
-      </DialogFooter>
     </DialogWrapper>
   );
 }

@@ -26,10 +26,13 @@ export default function History() {
             <div className="flex flex-col gap-5">
               {riwayatDaftar.map(item => (
                 <div className="rounded-20 border px-5 py-3 shadow-sm" key={item.invoice}>
-                  <div className="flex space-x-2 pb-2 text-sm font-medium">
-                    <p>{item.tgl}</p>
-                    <span>|</span>
-                    <p className="text-black/60">{item.invoice}</p>
+                  <div className="flex justify-between">
+                    <div className="flex space-x-2 pb-2 text-sm font-medium">
+                      <p>{item.tgl}</p>
+                      <span>|</span>
+                      <p className="text-black/60">{item.invoice}</p>
+                    </div>
+                    <p className="text-sm font-medium text-green-500">Aktif</p>
                   </div>
                   <hr />
                   <div className="flex justify-between md:mt-3">

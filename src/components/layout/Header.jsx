@@ -18,14 +18,6 @@ export default function Header() {
           <p className="text-sm font-medium text-[#1782C4]">Role</p>
           <User className="h-7 w-7 text-[#1782C4]" />
         </Link>
-        {/* <div className={cn('block lg:!hidden')}>
-          <MobileSidebar />
-        </div>
-
-        <div className="flex items-center gap-2">
-          <UserNav />
-          <ThemeToggle />
-        </div> */}
       </nav>
     </div>
   );

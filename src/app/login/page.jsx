@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -13,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import LoginImg from '@/../public/login.png';
 
 export default function Login() {
-  const { account, setLogin } = useStore();
+  const { account, setLogin, setLoggedInAccount } = useStore();
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -35,6 +36,11 @@ export default function Login() {
       setError('Password salah');
     } else {
       setLogin(true);
+      setLoggedInAccount(findAccount);
+      localStorage.setItem('loggedInAccount', JSON.stringify(findAccount));
+      Cookies.set('isLogin', 'true', { expires: 7 });
+      Cookies.set('loggedInAccount', JSON.stringify(findAccount));
+
       if (findAccount.role === 'pemilik' || findAccount.role === 'admin') {
         router.push('/admin/dashboard');
       } else {

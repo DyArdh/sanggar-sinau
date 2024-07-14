@@ -1,9 +1,11 @@
 import { create } from 'zustand';
+import Cookies from 'js-cookie';
 
 import PengajarIMG from '@/../public/section5-1.png';
 
 export const useStore = create((set) => ({
   isLogin: false,
+  loggedInAccount: null,
   account: [
     {
       id: 1,
@@ -29,6 +31,14 @@ export const useStore = create((set) => ({
       telp: '081234567890',
       role: 'admin',
     },
+    {
+      id: 4,
+      nama: 'Karina Aespa',
+      email: 'karinaespa@gmail.com',
+      password: 'karina123',
+      telp: '081234567890',
+      role: 'orangtua',
+    }
   ],
   programTatapMuka: [
     {
@@ -271,7 +281,26 @@ export const useStore = create((set) => ({
     }
   ],
   setLogin: () => set((state) => ({ isLogin: !state.isLogin })),
+  setLoggedInAccount: (account) => {
+    set({ loggedInAccount: account });
+    Cookies.set('loggedInAccount', JSON.stringify(account), { expires: 1 });
+  },
+  initializeFromCookies: () => {
+    const isLogin = Cookies.get('isLogin') === 'true';
+    const loggedInAccount = Cookies.get('loggedInAccount') ? JSON.parse(Cookies.get('loggedInAccount')) : null;
+    set({ isLogin, loggedInAccount });
+  },
   setProgramTatapMuka: (newData) => set((state) => ({
     programTatapMuka: [...state.programTatapMuka, ...newData],
   })),
+  logout: () => {
+    set({ isLogin: false, loggedInAccount: null });
+    Cookies.remove('isLogin');
+    Cookies.remove('loggedInAccount');
+  },
 }));
+
+if (typeof window !== 'undefined') {
+  const store = useStore.getState();
+  store.initializeFromCookies();
+}

@@ -17,7 +17,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const router = usePathname();
-  const { isLogin, setLogin } = useStore();
+  const { isLogin, setLogin, logout } = useStore();
 
   useEffect(() => {
     if (router === '/program-bimbingan/tatap-muka' || router === '/program-bimbingan/konsultasi-tugas') {
@@ -113,7 +113,7 @@ const Navbar = () => {
                 onMouseEnter={handleProfileDropdownMouseEnter}
                 onMouseLeave={handleProfileDropdownMouseLeave}
               >
-                <User className="h-7 w-7 cursor-pointer text-primary" onClick={toggleProfileDropdown} />
+                <User className="h-8 w-8 cursor-pointer text-primary" onClick={toggleProfileDropdown} />
                 {isProfileDropdownOpen && (
                   <div className="absolute right-0 w-40 rounded-md border bg-white shadow-lg">
                     <Link href="/profile" className="block px-4 py-2 hover:text-primary">
@@ -122,10 +122,7 @@ const Navbar = () => {
                     <Link href="/riwayat-pendaftaran" className="block px-4 py-2 hover:text-primary">
                       Riwayat Pendaftaran
                     </Link>
-                    <button
-                      className="block w-full px-4 py-2 text-left hover:text-primary"
-                      onClick={() => setLogin(false)}
-                    >
+                    <button className="block w-full px-4 py-2 text-left hover:text-primary" onClick={logout}>
                       Logout
                     </button>
                   </div>
@@ -222,10 +219,7 @@ const Navbar = () => {
                       >
                         Riwayat Pendaftaran
                       </Link>
-                      <button
-                        className="block w-full px-4 py-2 text-left hover:text-primary"
-                        onClick={() => setLogin(false)}
-                      >
+                      <button className="block w-full px-4 py-2 text-left hover:text-primary" onClick={logout}>
                         Logout
                       </button>
                     </div>

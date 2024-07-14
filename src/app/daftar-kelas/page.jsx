@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -16,6 +16,11 @@ import generateInvoiceCode from '@/lib/generateInvoiceID';
 
 export default function DaftarKelas() {
   const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const { isLogin } = useStore();
 
   useEffect(() => {
@@ -24,8 +29,8 @@ export default function DaftarKelas() {
     }
   }, [isLogin, router]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const onSubmit = data => {
+    console.log(data);
     const invoiceCode = generateInvoiceCode();
     router.push(`/daftar-kelas/${invoiceCode}`);
   };
@@ -103,30 +108,51 @@ export default function DaftarKelas() {
               Pembelajaran yang Menyenangkan
             </h1>
             <div className="w-10/12">
-              <form className="mt-8 grid grid-cols-1 gap-5 md:mt-10 md:grid-cols-2" onSubmit={handleSubmit}>
+              <form className="mt-8 grid grid-cols-1 gap-5 md:mt-10 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-2 md:w-72">
-                  <Label htmlFor="parent_name" className="text-sm font-semibold md:text-base">
+                  <Label htmlFor="nama_orangtua" className="text-sm font-semibold md:text-base">
                     Nama Orangtua
                   </Label>
-                  <Input id="parent_name" name="parent_name" type="text" placeholder="Masukkan nama lengkap" />
+                  <Input
+                    id="nama_orangtua"
+                    name="nama_orangtua"
+                    type="text"
+                    placeholder="Masukkan nama lengkap"
+                    {...register('nama_orangtua', { required: 'Nama orangtua wajib diisi' })}
+                  />
+                  {errors.nama_orangtua && <p className="text-sm text-red-500">{errors.nama_orangtua.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2 md:w-72">
-                  <Label htmlFor="parent_name" className="text-sm font-semibold md:text-base">
+                  <Label htmlFor="nama_anak" className="text-sm font-semibold md:text-base">
                     Nama Anak
                   </Label>
-                  <Input id="child_name" name="child_name" type="text" placeholder="Masukkan nama lengkap anak" />
+                  <Input
+                    id="nama_anak"
+                    name="nama_anak"
+                    type="text"
+                    placeholder="Masukkan nama lengkap anak"
+                    {...register('nama_anak', { required: 'Nama anak wajib diisi' })}
+                  />
+                  {errors.nama_anak && <p className="text-sm text-red-500">{errors.nama_anak.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2 md:w-72">
                   <Label htmlFor="email" className="text-sm font-semibold md:text-base">
                     Email
                   </Label>
-                  <Input id="email" name="email" type="text" placeholder="Masukkan email" />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="text"
+                    placeholder="Masukkan email"
+                    {...register('email', { required: 'Email wajib diisi' })}
+                  />
+                  {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2 md:w-72">
-                  <Label htmlFor="email" className="text-sm font-semibold md:text-base">
+                  <Label htmlFor="kelas" className="text-sm font-semibold md:text-base">
                     Kategori Kelas
                   </Label>
-                  <Select name="class" id="class">
+                  <Select name="kelas" id="kelas" {...register('kelas', { required: 'Kategori kelas wajib diisi' })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih Kategori Kelas" />
                     </SelectTrigger>
@@ -136,18 +162,30 @@ export default function DaftarKelas() {
                       <SelectItem value="SD/MI">SD/MI</SelectItem>
                     </SelectContent>
                   </Select>
+                  {errors.kelas && <p className="text-sm text-red-500">{errors.kelas.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2 md:w-72">
-                  <Label htmlFor="phone" className="text-sm font-semibold md:text-base">
+                  <Label htmlFor="telp" className="text-sm font-semibold md:text-base">
                     No. Telp/HP
                   </Label>
-                  <Input id="phone" name="phone" type="text" placeholder="Masukkan no. telp/hp" />
+                  <Input
+                    id="telp"
+                    name="telp"
+                    type="text"
+                    placeholder="Masukkan no. telp/hp"
+                    {...register('telp', { required: 'No. Telp/HP wajib diisi' })}
+                  />
+                  {errors.telp && <p className="text-sm text-red-500">{errors.telp.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2 md:w-72">
-                  <Label htmlFor="email" className="text-sm font-semibold md:text-base">
+                  <Label htmlFor="program_bimbingan" className="text-sm font-semibold md:text-base">
                     Program Bimbingan
                   </Label>
-                  <Select name="mentoring_program" id="mentoring_program">
+                  <Select
+                    name="program_bimbingan"
+                    id="program_bimbingan"
+                    {...register('program_bimbingan', { required: 'Program bimbingan wajib diisi' })}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Pilihan Tipe Program" />
                     </SelectTrigger>
@@ -156,6 +194,9 @@ export default function DaftarKelas() {
                       <SelectItem value="Konsultasi Tugas">Konsultasi Tugas</SelectItem>
                     </SelectContent>
                   </Select>
+                  {errors.program_bimbingan && (
+                    <p className="text-sm text-red-500">{errors.program_bimbingan.message}</p>
+                  )}
                 </div>
                 <div className="mt-3 text-center md:col-span-2 md:mt-5">
                   <Button className="rounded-full bg-primary px-10 py-3 font-medium text-white">Daftar</Button>
