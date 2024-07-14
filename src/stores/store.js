@@ -179,7 +179,8 @@ export const useStore = create((set) => ({
   pengajar: [
     {
       id: 1,
-      nama: 'Rina Putri',
+      nama_lengkap: 'Rina Putri',
+      ttl: 'Jember, 4 Desember 2002',
       pendidikan: 'Mahasiswa FKIP UNEJ',
       pengajar_jenjang: 'PAUD',
       telp: '081234567890',
@@ -188,7 +189,8 @@ export const useStore = create((set) => ({
     },
     {
       id: 2,
-      nama: 'Rina Putri',
+      nama_lengkap: 'Rina Putri',
+      ttl: 'Jember, 4 Desember 2002',
       pendidikan: 'Mahasiswa FKIP UNEJ',
       pengajar_jenjang: 'TK',
       telp: '081234567890',
@@ -197,7 +199,8 @@ export const useStore = create((set) => ({
     },
     {
       id: 3,
-      nama: 'Rina Putri',
+      nama_lengkap: 'Rina Putri',
+      ttl: 'Jember, 4 Desember 2002',
       pendidikan: 'Mahasiswa FKIP UNEJ',
       pengajar_jenjang: 'SD/MI',
       telp: '081234567890',
