@@ -10,7 +10,7 @@ import ChevronDown from '@/components/icons/ChevronDown';
 
 export default function Sidebar() {
   const router = usePathname();
-  const { setLogin } = useStore();
+  const { logout } = useStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export default function Sidebar() {
             </Link>
             <div
               className={`flex w-full items-center space-x-3 rounded-md py-2 pl-4 hover:bg-primary`}
-              onClick={() => setLogin(false)}
+              onClick={logout}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

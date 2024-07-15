@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -20,14 +21,15 @@ export default function DaftarKelas() {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm();
   const { isLogin } = useStore();
 
-  useEffect(() => {
-    if (!isLogin && typeof window !== 'undefined') {
-      router.push('/login');
-    }
-  }, [isLogin, router]);
+  // useEffect(() => {
+  //   if (!isLogin && typeof window !== 'undefined') {
+  //     router.push('/login');
+  //   }
+  // }, [isLogin, router]);
 
   const onSubmit = data => {
     console.log(data);
@@ -74,10 +76,9 @@ export default function DaftarKelas() {
                     height="315"
                     src="https://www.youtube.com/embed/WmijSTTxOLs?si=GI5gTBP0ckp9suuh"
                     title="YouTube video player"
-                    frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
                   ></iframe>
                 </div>
 
@@ -152,16 +153,23 @@ export default function DaftarKelas() {
                   <Label htmlFor="kelas" className="text-sm font-semibold md:text-base">
                     Kategori Kelas
                   </Label>
-                  <Select name="kelas" id="kelas" {...register('kelas', { required: 'Kategori kelas wajib diisi' })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih Kategori Kelas" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="PAUD">PAUD</SelectItem>
-                      <SelectItem value="TK">TK</SelectItem>
-                      <SelectItem value="SD/MI">SD/MI</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Controller
+                    name="kelas"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Select {...field}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih Kategori Kelas" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="PAUD">PAUD</SelectItem>
+                          <SelectItem value="TK">TK</SelectItem>
+                          <SelectItem value="SD/MI">SD/MI</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
                   {errors.kelas && <p className="text-sm text-red-500">{errors.kelas.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2 md:w-72">
@@ -181,25 +189,35 @@ export default function DaftarKelas() {
                   <Label htmlFor="program_bimbingan" className="text-sm font-semibold md:text-base">
                     Program Bimbingan
                   </Label>
-                  <Select
+                  <Controller
                     name="program_bimbingan"
-                    id="program_bimbingan"
-                    {...register('program_bimbingan', { required: 'Program bimbingan wajib diisi' })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilihan Tipe Program" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Tatap Muka Rutin">Tatap Muka Rutin</SelectItem>
-                      <SelectItem value="Konsultasi Tugas">Konsultasi Tugas</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Select {...field} name="program_bimbingan" id="program_bimbingan">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilihan Tipe Program" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Tatap Muka Rutin">Tatap Muka Rutin</SelectItem>
+                          <SelectItem value="Konsultasi Tugas">Konsultasi Tugas</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
                   {errors.program_bimbingan && (
                     <p className="text-sm text-red-500">{errors.program_bimbingan.message}</p>
                   )}
                 </div>
                 <div className="mt-3 text-center md:col-span-2 md:mt-5">
                   <Button className="rounded-full bg-primary px-10 py-3 font-medium text-white">Daftar</Button>
+                  <p className="mt-4 text-sm font-medium md:text-base">
+                    Belum memiliki akun?{' '}
+                    <Link href="/registrasi" className="font-semibold text-[#0A4584] hover:underline">
+                      Registrasi
+                    </Link>{' '}
+                    disini
+                  </p>
                 </div>
               </form>
             </div>

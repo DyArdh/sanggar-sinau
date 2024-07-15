@@ -10,7 +10,7 @@ export const useStore = create((set) => ({
     {
       id: 1,
       nama: 'Pemilik',
-      email: 'pemilik@sanngarsinau.com',
+      email: 'pemilik@gmail.com',
       password: 'pemilik123',
       telp: '081234567890',
       role: 'pemilik',
@@ -18,7 +18,7 @@ export const useStore = create((set) => ({
     {
       id: 2,
       nama: 'Admin1',
-      email: 'admin1@sanngarsinau.com',
+      email: 'admin1@gmail.com',
       password: 'admin123',
       telp: '081234567890',
       role: 'admin',
@@ -26,7 +26,7 @@ export const useStore = create((set) => ({
     {
       id: 3,
       nama: 'Admin2',
-      email: 'admin2@sanngarsinau.com',
+      email: 'admin2@gmail.com',
       password: 'admin123',
       telp: '081234567890',
       role: 'admin',

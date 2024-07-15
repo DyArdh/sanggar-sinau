@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import Whatsapp from '@/components/icons/Whatsapp';
 import Instagram from '@/components/icons/Instagram';
 import Facebook from '@/components/icons/Facebook';
@@ -12,9 +14,15 @@ export default function Footer() {
           <div className="flex items-center gap-5">
             <p>Ikuti kami:</p>
             <div className="flex gap-4">
-              <Whatsapp className="w-8" />
-              <Instagram className="w-8" />
-              <Facebook className="w-8" />
+              <Link href={'https://wa.me/6282230908550'} target="_blank">
+                <Whatsapp className="w-8" />
+              </Link>
+              <Link href={'https://instagram.com/sanggar_sinau'} target="_blank">
+                <Instagram className="w-8" />
+              </Link>
+              <Link href={'https://facebook.com/sanggarSinau'} target="_blank">
+                <Facebook className="w-8" />
+              </Link>
             </div>
           </div>
         </div>

@@ -180,7 +180,11 @@ export default function Home() {
             </Link>
             <div className="mt-8 w-full rounded-30 bg-[#15C4CF] py-8 text-center">
               <h1 className="text-xl font-bold text-white md:text-3xl">Konsultasikan Kebutuhan Anda Sekarang</h1>
-              <Button className="mt-8 bg-white text-base text-primary hover:bg-white/90 md:text-lg">Chat Admin</Button>
+              <Link href={'https://wa.me/6282230908550'} target="_blank">
+                <Button className="mt-8 bg-white text-base text-primary hover:bg-white/90 md:text-lg">
+                  Chat Admin
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

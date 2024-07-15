@@ -15,12 +15,12 @@ export async function middleware(req) {
     const loggedInAccount = cookies.loggedInAccount ? JSON.parse(cookies.loggedInAccount) : null;
 
     if (!isLogin || !loggedInAccount) {
-      url.pathname = '/';
+      url.pathname = '/login';
       return NextResponse.redirect(url);
     }
 
     if (pathname.startsWith('/admin') && (loggedInAccount.role !== 'admin' && loggedInAccount.role !== 'pemilik')) {
-      url.pathname = '/';
+      url.pathname = '/login';
       return NextResponse.redirect(url);
     }
   }
