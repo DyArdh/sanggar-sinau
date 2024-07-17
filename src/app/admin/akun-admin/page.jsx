@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+// Import Modules
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { MoreHorizontal } from 'lucide-react';
+import Cookies from 'js-cookie';
 
+// Import Global State
 import { useStore } from '@/stores/store';
 
-import PenToSquare from '@/components/icons/PenToSquare';
-import TrashCan from '@/components/icons/TrashCan';
+// Import Components
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,30 +18,43 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+
+import PenToSquare from '@/components/icons/PenToSquare';
+import TrashCan from '@/components/icons/TrashCan';
+
 import DataTable from '@/components/DataTable';
 import Plus from '@/components/icons/Plus';
-
-import AddAdmin from './AddAdmin';
-import EditAdmin from './EditAdmin';
-import DeleteAdmin from './DeleteAdmin';
+import AddAdmin from '@/components/modals/AddAdmin';
+import EditAdmin from '@/components/modals/EditAdmin';
+import DeleteAdmin from '@/components/modals/DeleteAdmin';
 
 export default function AkunAdmin() {
+  const router = useRouter();
   const { account } = useStore();
   const [addAdmin, setAddAdmin] = useState(false);
   const [editAdminDialog, setEditAdminDialog] = useState(false);
   const [deleteAdminDialog, setDeleteAdminDialog] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState(null);
 
+  useEffect(() => {
+    const loggedAccount = JSON.parse(Cookies.get('loggedInAccount'));
+    if (loggedAccount.role !== 'pemilik' && typeof window !== 'undefined') {
+      router.push('/forbidden');
+    }
+  }, [router]);
+
   const adminAccount = account.filter(item => item.role === 'admin');
 
   const Columns = [
     {
-      accessorKey: 'id',
+      id: 'id',
       header: 'No',
+      cell: ({ row, table }) =>
+        (table.getSortedRowModel()?.flatRows?.findIndex(flatRow => flatRow.id === row.id) || 0) + 1,
     },
     {
-      accessorKey: 'nama',
-      header: 'Nama',
+      accessorKey: 'nama_lengkap',
+      header: 'Nama Lengkap',
     },
     {
       accessorKey: 'email',

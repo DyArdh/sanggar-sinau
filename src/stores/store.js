@@ -9,7 +9,7 @@ export const useStore = create((set) => ({
   account: [
     {
       id: 1,
-      nama: 'Pemilik',
+      nama_lengkap: 'Pemilik',
       email: 'pemilik@gmail.com',
       password: 'pemilik123',
       telp: '081234567890',
@@ -17,7 +17,7 @@ export const useStore = create((set) => ({
     },
     {
       id: 2,
-      nama: 'Admin1',
+      nama_lengkap: 'Admin1',
       email: 'admin1@gmail.com',
       password: 'admin123',
       telp: '081234567890',
@@ -25,7 +25,7 @@ export const useStore = create((set) => ({
     },
     {
       id: 3,
-      nama: 'Admin2',
+      nama_lengkap: 'Admin2',
       email: 'admin2@gmail.com',
       password: 'admin123',
       telp: '081234567890',
@@ -33,7 +33,7 @@ export const useStore = create((set) => ({
     },
     {
       id: 4,
-      nama: 'Karina Aespa',
+      nama_lengkap: 'Karina Aespa',
       email: 'karinaespa@gmail.com',
       password: 'karina123',
       telp: '081234567890',

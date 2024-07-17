@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Cookies from 'js-cookie';
 import { useState, useEffect } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -10,7 +11,7 @@ import ChevronDown from '@/components/icons/ChevronDown';
 
 export default function Sidebar() {
   const router = usePathname();
-  const { logout } = useStore();
+  const { logout, loggedInAccount } = useStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -44,63 +45,67 @@ export default function Sidebar() {
               </svg>
               <span className="font-semibold tracking-tight">Beranda</span>
             </Link>
-            <Link
-              href="/admin/akun-admin"
-              className={`${router === '/admin/akun-admin' && 'bg-primary'} flex w-full items-center space-x-3 rounded-md py-2 pl-4 hover:bg-primary`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.25em"
-                height="1em"
-                viewBox="0 0 640 512"
-                className="h-5 w-5"
-              >
-                <path
-                  fill="currentColor"
-                  d="M144 0a80 80 0 1 1 0 160a80 80 0 1 1 0-160m368 0a80 80 0 1 1 0 160a80 80 0 1 1 0-160M0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96H21.3C9.6 320 0 310.4 0 298.7M405.3 320h-.7c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7c58.9 0 106.7 47.8 106.7 106.7c0 11.8-9.6 21.3-21.3 21.3zM224 224a96 96 0 1 1 192 0a96 96 0 1 1-192 0m-96 261.3c0-73.6 59.7-133.3 133.3-133.3h117.4c73.6 0 133.3 59.7 133.3 133.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7"
-                />
-              </svg>
-              <span className="font-semibold tracking-tight">Manajemen Akun</span>
-            </Link>
-            <div>
-              <div
-                className={`${isDropdownOpen && 'bg-primary'} flex w-full items-center space-x-3 rounded-md py-2 pl-4 hover:bg-primary`}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.25em"
-                  height="1em"
-                  viewBox="0 0 640 512"
-                  className="h-5 w-5"
+            {loggedInAccount?.role === 'pemilik' && (
+              <>
+                <Link
+                  href="/admin/akun-admin"
+                  className={`${router === '/admin/akun-admin' && 'bg-primary'} flex w-full items-center space-x-3 rounded-md py-2 pl-4 hover:bg-primary`}
                 >
-                  <path
-                    fill="currentColor"
-                    d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9V320c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6c-3.2 4.3-4.1 9.9-2.3 15s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7.3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7c-3.2-14.2-7.5-28.7-13.5-42v-24.6c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5.8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1l280.6-101c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1c-7.6-2.7-15.6-4.1-23.7-4.1M128 408c0 35.3 86 72 192 72s192-36.7 192-72l-15.3-145.4L354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6l-142.2-51.4z"
-                  />
-                </svg>
-                <div className="flex items-center justify-between gap-x-3">
-                  <span className="font-semibold tracking-tight">Program Bimbingan</span>
-                  <ChevronDown />
-                </div>
-              </div>
-              {isDropdownOpen && (
-                <div className={`${isDropdownOpen ? 'animate-slide-down' : 'animate-slide-up'} pl-8`}>
-                  <Link
-                    href="/admin/program-bimbingan/tatap-muka"
-                    className={`${router === '/admin/program-bimbingan/tatap-muka' && 'text-primary'} block px-4 py-2 font-semibold hover:text-primary`}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1.25em"
+                    height="1em"
+                    viewBox="0 0 640 512"
+                    className="h-5 w-5"
                   >
-                    Tatap Muka
-                  </Link>
-                  <Link
-                    href="/admin/program-bimbingan/konsultasi"
-                    className={`${router === '/admin/program-bimbingan/konsultasi' && 'text-primary'} block px-4 py-2 font-semibold hover:text-primary`}
+                    <path
+                      fill="currentColor"
+                      d="M144 0a80 80 0 1 1 0 160a80 80 0 1 1 0-160m368 0a80 80 0 1 1 0 160a80 80 0 1 1 0-160M0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96H21.3C9.6 320 0 310.4 0 298.7M405.3 320h-.7c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7c58.9 0 106.7 47.8 106.7 106.7c0 11.8-9.6 21.3-21.3 21.3zM224 224a96 96 0 1 1 192 0a96 96 0 1 1-192 0m-96 261.3c0-73.6 59.7-133.3 133.3-133.3h117.4c73.6 0 133.3 59.7 133.3 133.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7"
+                    />
+                  </svg>
+                  <span className="font-semibold tracking-tight">Manajemen Akun</span>
+                </Link>
+                <div>
+                  <div
+                    className={`${isDropdownOpen && 'bg-primary'} flex w-full items-center space-x-3 rounded-md py-2 pl-4 hover:bg-primary`}
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    Konsultasi Tugas
-                  </Link>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1.25em"
+                      height="1em"
+                      viewBox="0 0 640 512"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9V320c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6c-3.2 4.3-4.1 9.9-2.3 15s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7.3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7c-3.2-14.2-7.5-28.7-13.5-42v-24.6c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5.8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1l280.6-101c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1c-7.6-2.7-15.6-4.1-23.7-4.1M128 408c0 35.3 86 72 192 72s192-36.7 192-72l-15.3-145.4L354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6l-142.2-51.4z"
+                      />
+                    </svg>
+                    <div className="flex items-center justify-between gap-x-3">
+                      <span className="font-semibold tracking-tight">Program Bimbingan</span>
+                      <ChevronDown />
+                    </div>
+                  </div>
+                  {isDropdownOpen && (
+                    <div className={`${isDropdownOpen ? 'animate-slide-down' : 'animate-slide-up'} pl-8`}>
+                      <Link
+                        href="/admin/program-bimbingan/tatap-muka"
+                        className={`${router === '/admin/program-bimbingan/tatap-muka' && 'text-primary'} block px-4 py-2 font-semibold hover:text-primary`}
+                      >
+                        Tatap Muka
+                      </Link>
+                      <Link
+                        href="/admin/program-bimbingan/konsultasi"
+                        className={`${router === '/admin/program-bimbingan/konsultasi' && 'text-primary'} block px-4 py-2 font-semibold hover:text-primary`}
+                      >
+                        Konsultasi Tugas
+                      </Link>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </>
+            )}
             <Link
               href="/admin/pengajar"
               className={`${router === '/admin/pengajar' && 'bg-primary'} flex w-full items-center space-x-3 rounded-md py-2 pl-4 hover:bg-primary`}
