@@ -18,9 +18,9 @@ import {
 import DataTable from '@/components/DataTable';
 import Plus from '@/components/icons/Plus';
 
-import AddPengajar from './AddPengajar';
-import EditPengajar from './EditPengajar';
-import DeletePengajar from './DeletePengajar';
+import AddPengajar from '@/components/modals/AddPengajar';
+import EditPengajar from '@/components/modals/EditPengajar';
+import DeletePengajar from '@/components/modals/DeletePengajar';
 
 export default function TatapMuka() {
   const { pengajar } = useStore();
@@ -31,12 +31,14 @@ export default function TatapMuka() {
 
   const Columns = [
     {
-      accessorKey: 'id',
+      id: 'id',
       header: 'No',
+      cell: ({ row, table }) =>
+        (table.getSortedRowModel()?.flatRows?.findIndex(flatRow => flatRow.id === row.id) || 0) + 1,
     },
     {
       accessorKey: 'nama_lengkap',
-      header: 'Nama',
+      header: 'Nama Lengkap',
     },
     {
       accessorKey: 'pengajar_jenjang',
@@ -44,7 +46,7 @@ export default function TatapMuka() {
     },
     {
       accessorKey: 'telp',
-      header: 'No. Telp',
+      header: 'No. Telp/HP',
     },
     {
       accessorKey: 'lokasi_mengajar',

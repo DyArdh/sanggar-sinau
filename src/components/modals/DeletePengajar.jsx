@@ -1,7 +1,9 @@
+// Import Components
 import { useToast } from '@/components/ui/use-toast';
-import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+
+import DialogWrapper from '@/components/DialogWrapper';
 
 export default function DeletePengajar({ isOpen, setIsOpen, onDelete }) {
   const { toast } = useToast();

@@ -1,4 +1,8 @@
+// Import Modules
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+
+// Import Components
 import { useToast } from '@/components/ui/use-toast';
 import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -6,23 +10,39 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
-export default function AddPengajar({ isOpen, setIsOpen, onSubmit }) {
+export default function EditPengajar({ isOpen, setIsOpen, onSubmit, initialData }) {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm();
+    reset,
+  } = useForm({
+    defaultValues: {
+      nama: initialData?.nama,
+      pendidikan: initialData?.pendidikan,
+      pengajar_jenjang: initialData?.pengajar_jenjang,
+      telp: initialData?.telp,
+      lokasi_mengajar: initialData?.lokasi_mengajar,
+      image: initialData?.image,
+    },
+  });
+
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (initialData) {
+      reset(initialData);
+    }
+  }, [initialData, reset]);
 
   const onSubmitForm = data => {
     onSubmit(data);
+    console.log(data);
     toast({
-      description: 'Data pengajar telah ditambahkan',
+      description: 'Data pengajar telah diperbarui',
       className: 'bg-green-500 text-white font-medium',
     });
     setIsOpen(false);
-    reset();
   };
 
   return (

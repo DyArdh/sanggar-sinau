@@ -1,46 +1,32 @@
-import { useState, useEffect } from 'react';
+// Import Modules
 import { useForm } from 'react-hook-form';
 
+// Import Components
 import { useToast } from '@/components/ui/use-toast';
-import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
-export default function EditPengajar({ isOpen, setIsOpen, onSubmit, initialData }) {
+import DialogWrapper from '@/components/DialogWrapper';
+
+export default function AddPengajar({ isOpen, setIsOpen, onSubmit }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
-  } = useForm({
-    defaultValues: {
-      nama: initialData?.nama,
-      pendidikan: initialData?.pendidikan,
-      pengajar_jenjang: initialData?.pengajar_jenjang,
-      telp: initialData?.telp,
-      lokasi_mengajar: initialData?.lokasi_mengajar,
-      image: initialData?.image,
-    },
-  });
-
+    formState: { errors },
+  } = useForm();
   const { toast } = useToast();
-
-  useEffect(() => {
-    if (initialData) {
-      reset(initialData);
-    }
-  }, [initialData, reset]);
 
   const onSubmitForm = data => {
     onSubmit(data);
-    console.log(data);
     toast({
-      description: 'Data pengajar telah diperbarui',
+      description: 'Data pengajar telah ditambahkan',
       className: 'bg-green-500 text-white font-medium',
     });
     setIsOpen(false);
+    reset();
   };
 
   return (
@@ -128,7 +114,8 @@ export default function EditPengajar({ isOpen, setIsOpen, onSubmit, initialData 
               <Label htmlFor="image" className="font-semibold">
                 Image
               </Label>
-              <Input type="file" id="image" {...register('image')} />
+              <Input type="file" id="image" {...register('image', { required: 'Foto wajib diisi' })} />
+              {errors.image && <span className="text-sm text-red-500">{errors.image.message}</span>}
             </div>
           </div>
           <DialogFooter className="pt-10">
