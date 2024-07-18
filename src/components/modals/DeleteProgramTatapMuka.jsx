@@ -17,7 +17,7 @@ export default function DeleteProgram({ isOpen, setIsOpen, onDelete }) {
 
   return (
     <DialogWrapper isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTitle className="mt-5 text-xl text-red-500">Hapus Program Bimbingan</DialogTitle>
+      <DialogTitle className="mt-5 text-xl text-red-500">Hapus Program Tatap Muka</DialogTitle>
       <DialogDescription className="pt-3 text-base">
         Yakin ingin menghapus program bimbingan ini? <br />
         Data yang di hapus tidak dapat dikembalikan

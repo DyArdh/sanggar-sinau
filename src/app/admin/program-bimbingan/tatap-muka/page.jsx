@@ -1,12 +1,19 @@
 'use client';
 
+// Import Modules
 import { useState } from 'react';
 import { MoreHorizontal } from 'lucide-react';
 
+// Import Global State
 import { useStore } from '@/stores/store';
 
+// Import Lib
+import formatToIDR from '@/lib/formatToIDR';
+
+// Import Components
 import PenToSquare from '@/components/icons/PenToSquare';
 import TrashCan from '@/components/icons/TrashCan';
+import Plus from '@/components/icons/Plus';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,12 +22,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import DataTable from '@/components/DataTable';
-import Plus from '@/components/icons/Plus';
 
-import AddProgram from './AddProgram';
-import EditProgram from './EditProgram';
-import DeleteProgram from './DeleteProgram';
+import DataTable from '@/components/DataTable';
+import AddProgram from '@/components/modals/AddProgramTatapMuka';
+import EditProgram from '@/components/modals/EditProgramTatapMuka';
+import DeleteProgram from '@/components/modals/DeleteProgramTatapMuka';
 
 export default function TatapMuka() {
   const { programTatapMuka } = useStore();
@@ -31,8 +37,10 @@ export default function TatapMuka() {
 
   const Columns = [
     {
-      accessorKey: 'id',
-      header: '#',
+      id: 'id',
+      header: 'No',
+      cell: ({ row, table }) =>
+        (table.getSortedRowModel()?.flatRows?.findIndex(flatRow => flatRow.id === row.id) || 0) + 1,
     },
     {
       accessorKey: 'jenjang',
@@ -41,6 +49,7 @@ export default function TatapMuka() {
     {
       accessorKey: 'harga',
       header: 'Harga',
+      cell: ({ cell }) => formatToIDR(cell.getValue()),
     },
     {
       accessorKey: 'lokasi',

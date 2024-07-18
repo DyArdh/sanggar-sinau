@@ -1,12 +1,19 @@
 'use client';
 
+// Import Modules
 import { useState } from 'react';
 import { MoreHorizontal } from 'lucide-react';
 
+// Import Global State
 import { useStore } from '@/stores/store';
 
+// Import Lib
+import formatToIDR from '@/lib/formatToIDR';
+
+// Import Components
 import PenToSquare from '@/components/icons/PenToSquare';
 import TrashCan from '@/components/icons/TrashCan';
+import Plus from '@/components/icons/Plus';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,12 +22,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import DataTable from '@/components/DataTable';
-import Plus from '@/components/icons/Plus';
 
-import AddProgram from './AddProgramKonsultasi';
-import EditProgram from './EditProgramKonsultasi';
-import DeleteProgram from './DeleteProgramKonsultasi';
+import DataTable from '@/components/DataTable';
+import AddProgram from '@/components/modals/AddProgramKonsultasi';
+import EditProgram from '@/components/modals/EditProgramKonsultasi';
+import DeleteProgram from '@/components/modals/DeleteProgramKonsultasi';
 
 export default function Konsultasi() {
   const { programKonsultasi } = useStore();
@@ -31,8 +37,10 @@ export default function Konsultasi() {
 
   const Columns = [
     {
-      accessorKey: 'id',
-      header: '#',
+      id: 'id',
+      header: 'No',
+      cell: ({ row, table }) =>
+        (table.getSortedRowModel()?.flatRows?.findIndex(flatRow => flatRow.id === row.id) || 0) + 1,
     },
     {
       accessorKey: 'jenjang',
@@ -41,6 +49,7 @@ export default function Konsultasi() {
     {
       accessorKey: 'harga',
       header: 'Harga',
+      cell: ({ cell }) => formatToIDR(cell.getValue()),
     },
     {
       accessorKey: 'lokasi',
