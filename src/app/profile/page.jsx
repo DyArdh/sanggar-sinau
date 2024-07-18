@@ -58,7 +58,6 @@ export default function Profile() {
 
   const onSubmit = data => {
     console.log(data);
-    // Handle form submission
     toast({
       description: 'Data pengajar telah ditambahkan',
       className: 'bg-green-500 text-white font-medium',
@@ -68,28 +67,28 @@ export default function Profile() {
   const handleEditMode1 = () => {
     setEditMode1(!editMode1);
     if (!editMode1) {
-      trigger('parentName'); // Trigger validation when entering edit mode
+      trigger('parentName');
     }
   };
 
   const handleEditMode2 = () => {
     setEditMode2(!editMode2);
     if (!editMode2) {
-      trigger('childName'); // Trigger validation when entering edit mode
+      trigger('childName');
     }
   };
 
   const handleEditMode3 = () => {
     setEditMode3(!editMode3);
     if (!editMode3) {
-      trigger('telp'); // Trigger validation when entering edit mode
+      trigger('telp');
     }
   };
 
   const handleEditMode4 = () => {
     setEditMode4(!editMode4);
     if (!editMode4) {
-      trigger('password'); // Trigger validation when entering edit mode
+      trigger('password');
     }
   };
 

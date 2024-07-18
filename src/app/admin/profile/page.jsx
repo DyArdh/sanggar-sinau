@@ -2,75 +2,121 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
 
 import User from '@/components/icons/User';
 import Pencil from '@/components/icons/Pencil';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { useStore } from '@/stores/store';
 
 export default function Profile() {
   const router = useRouter();
-  const { isLogin } = useStore();
-  const [parentName, setParentName] = useState('Karina Aespa');
-  const [childName, setChildName] = useState('Winter Aespa');
-  const [email, setEmail] = useState('karinaespa@gmail.com');
-  const [telp, setTelp] = useState('081234567890');
-  const [password, setPassword] = useState('akuseorangkapitan');
+  const { toast } = useToast();
+  const { loggedInAccount } = useStore();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    trigger,
+  } = useForm({
+    defaultValues: {
+      nama_lengkap: loggedInAccount?.nama_lengkap || '',
+      email: loggedInAccount?.email || '',
+      telp: loggedInAccount?.telp || '',
+      password: loggedInAccount?.password || '',
+    },
+  });
+
   const [editMode1, setEditMode1] = useState(false);
   const [editMode2, setEditMode2] = useState(false);
   const [editMode3, setEditMode3] = useState(false);
-  const [editMode4, setEditMode4] = useState(false);
+
+  useEffect(() => {
+    const isUserLoggedIn = Cookies.get('isLogin');
+    if (!isUserLoggedIn && typeof window !== 'undefined') {
+      router.push('/login');
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (loggedInAccount) {
+      reset({
+        nama_lengkap: loggedInAccount?.nama_lengkap || '',
+        email: loggedInAccount?.email || '',
+        telp: loggedInAccount?.telp || '',
+        password: loggedInAccount?.password || '',
+      });
+    }
+  }, [loggedInAccount, reset]);
+
+  const onSubmit = data => {
+    console.log(data);
+    toast({
+      description: 'Data pengajar telah ditambahkan',
+      className: 'bg-green-500 text-white font-medium',
+    });
+  };
+
+  const handleEditMode1 = () => {
+    setEditMode1(!editMode1);
+    if (!editMode1) {
+      trigger('parentName');
+    }
+  };
+
+  const handleEditMode2 = () => {
+    setEditMode2(!editMode2);
+    if (!editMode2) {
+      trigger('telp');
+    }
+  };
+
+  const handleEditMode3 = () => {
+    setEditMode3(!editMode3);
+    if (!editMode3) {
+      trigger('password');
+    }
+  };
 
   return (
-    <>
-      <section className="flex w-full bg-white">
-        <div className="container mx-auto flex flex-col pb-12 pt-12 md:gap-8 md:pb-16 md:pt-10 lg:px-16">
-          <div>
-            <div className="flex items-center gap-x-5 md:gap-x-8">
-              <span className="text-[#323232]">
-                <User className="w-12" />
+    <section className="flex w-full bg-white">
+      <div className="items-left container flex flex-col pb-12 pt-12 md:gap-8 md:pb-16 md:pt-10 lg:px-16">
+        <div>
+          <div className="flex items-center gap-x-5 md:gap-x-8">
+            <span className="text-[#323232]">
+              <User className="w-12" />
+            </span>
+            <div>
+              <p className="mb-3 font-bold text-thirdary md:text-lg">{loggedInAccount?.nama_lengkap}</p>
+              <span className="rounded-full bg-primary px-4 py-1 text-sm font-medium text-white md:text-base">
+                {loggedInAccount?.role}
               </span>
-              <div>
-                <p className="mb-3 font-bold text-thirdary md:text-lg">{parentName}</p>
-                <span className="rounded-full bg-primary px-4 py-1 text-sm font-medium text-white md:text-base">
-                  Orangtua
-                </span>
-              </div>
             </div>
-            <div className="mt-5 rounded-20 border px-3 py-8 md:mt-7 md:max-w-[900px] md:px-12 md:py-6">
-              <h1 className="pl-2 text-lg font-bold md:text-xl">Data Profile</h1>
+          </div>
+          <div className="mt-5 rounded-20 border px-3 py-8 md:mt-7 md:max-w-[900px] md:px-12 md:py-6">
+            <h1 className="pl-2 text-lg font-bold md:text-xl">Data Profile</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <table className="border-separate border-spacing-4 md:mt-6 md:border-spacing-2">
                 <tbody>
                   <tr>
-                    <td className="font-semibold text-thirdary md:w-64 md:text-lg">Nama Orangtua</td>
+                    <td className="font-semibold text-thirdary md:w-64 md:text-lg">Nama</td>
                     <td className="md:w-80 md:text-lg">
                       {editMode1 ? (
-                        <Input type="text" value={parentName} onChange={e => setParentName(e.target.value)} />
+                        <Input type="text" {...register('nama_lengkap', { required: true })} />
                       ) : (
-                        parentName
+                        <span>{loggedInAccount?.nama_lengkap}</span>
+                      )}
+                      {editMode1 && errors.nama_lengkap && (
+                        <span className="text-sm text-red-500">Nama harus diisi.</span>
                       )}
                     </td>
                     <td className="relative w-10">
                       <div className="flex h-full items-center justify-center">
-                        <span onClick={() => setEditMode1(!editMode1)}>
-                          <Pencil />
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="font-semibold text-thirdary md:w-64 md:text-lg">Nama Anak</td>
-                    <td className="md:w-80 md:text-lg">
-                      {editMode2 ? (
-                        <Input type="text" value={parentName} onChange={e => setChildName(e.target.value)} />
-                      ) : (
-                        childName
-                      )}
-                    </td>
-                    <td className="relative w-10">
-                      <div className="flex h-full items-center justify-center">
-                        <span onClick={() => setEditMode2(!editMode2)}>
+                        <span onClick={handleEditMode1}>
                           <Pencil />
                         </span>
                       </div>
@@ -79,11 +125,16 @@ export default function Profile() {
                   <tr>
                     <td className="font-semibold text-thirdary md:w-64 md:text-lg">No. Telp/HP</td>
                     <td className="md:w-80 md:text-lg">
-                      {editMode3 ? <Input type="text" value={telp} onChange={e => setTelp(e.target.value)} /> : telp}
+                      {editMode2 ? (
+                        <Input type="text" {...register('telp', { required: true })} />
+                      ) : (
+                        <span>{loggedInAccount?.telp}</span>
+                      )}
+                      {editMode2 && errors.telp && <span className="text-red-500">No. Telp/HP harus diisi.</span>}
                     </td>
                     <td className="relative w-10">
                       <div className="flex h-full items-center justify-center">
-                        <span onClick={() => setEditMode3(!editMode3)}>
+                        <span onClick={handleEditMode2}>
                           <Pencil />
                         </span>
                       </div>
@@ -91,20 +142,23 @@ export default function Profile() {
                   </tr>
                   <tr>
                     <td className="font-semibold text-thirdary md:w-64 md:text-lg">Email</td>
-                    <td className="text-thirdary md:text-lg">{email}</td>
+                    <td className="text-thirdary md:text-lg">{loggedInAccount?.email}</td>
                   </tr>
                   <tr>
                     <td className="font-semibold text-thirdary md:w-64 md:text-lg">Password</td>
                     <td className="md:w-80 md:text-lg">
-                      {editMode4 ? (
-                        <Input type="text" value={password} onChange={e => setPassword(e.target.value)} />
+                      {editMode3 ? (
+                        <Input type="text" {...register('password', { required: true })} />
                       ) : (
-                        '*'.repeat(password.length)
+                        <span>{'*'.repeat(loggedInAccount?.password.length)}</span>
+                      )}
+                      {editMode3 && errors.password && (
+                        <span className="text-sm text-red-500">Password harus diisi.</span>
                       )}
                     </td>
                     <td className="relative w-10">
                       <div className="flex h-full items-center justify-center">
-                        <span onClick={() => setEditMode4(!editMode4)}>
+                        <span onClick={handleEditMode3}>
                           <Pencil />
                         </span>
                       </div>
@@ -113,12 +167,14 @@ export default function Profile() {
                 </tbody>
               </table>
               <div className="mt-6 text-center md:mt-10">
-                <Button className="rounded-full px-6 font-semibold">Perbaharui Profile</Button>
+                <Button type="submit" className="rounded-full px-6 font-semibold">
+                  Perbaharui Profile
+                </Button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

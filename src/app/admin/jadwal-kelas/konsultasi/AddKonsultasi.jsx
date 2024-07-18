@@ -1,8 +1,8 @@
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import { useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { TimePickerInput } from '@/components/TimePicker';
@@ -10,16 +10,25 @@ import CustomSelect from './CustomSelect';
 
 export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
   const {
+    control,
     register,
     handleSubmit,
-    setValue,
-    watch,
+    reset,
+    clearErrors,
     formState: { errors },
   } = useForm();
   const { toast } = useToast();
 
   const listSesi = ['Sesi Siang', 'Sesi Sore', 'Sesi Malam'];
   const listHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu'];
+
+  const combinedHariError = [errors.hari?.mulai?.message, errors.hari?.selesai?.message].filter(Boolean).join(' dan ');
+  const combinedJamError = [errors.jam?.mulai?.message, errors.jam?.selesai?.message].filter(Boolean).join(' dan ');
+
+  useEffect(() => {
+    reset();
+    clearErrors();
+  }, [isOpen, reset, clearErrors]);
 
   const onSubmitForm = data => {
     onSubmit(data);
@@ -39,58 +48,56 @@ export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
           <Label htmlFor="sesi" className="font-semibold">
             Sesi
           </Label>
-          <CustomSelect
+          <Controller
+            id="sesi"
             name="sesi"
-            options={listSesi}
-            placeholder="Pilih sesi"
-            onValueChange={value => setValue('sesi', value)}
-            {...register('sesi', { required: 'Sesi is required' })}
+            control={control}
+            rules={{ required: 'Sesi wajib diisi' }}
+            render={({ field }) => <CustomSelect {...field} options={listSesi} placeholder="Pilih sesi" />}
           />
-          {errors.sesi && <span className="text-red-500">{errors.sesi.message}</span>}
+          {errors.sesi && <span className="text-sm text-red-500">{errors.sesi.message}</span>}
         </div>
-        {/* <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <Label htmlFor="hari" className="font-semibold">
             Hari
           </Label>
           <div className="flex items-center justify-between gap-3">
-            <CustomSelect
+            <Controller
+              id="hari.mulai"
               name="hari.mulai"
-              options={listHari}
-              placeholder="Pilih hari"
-              {...register('hari.mulai', { required: 'Hari mulai is required' })}
-              onValueChange={value => setValue('hari.mulai', value)}
+              control={control}
+              rules={{ required: 'Hari Mulai wajib diisi' }}
+              render={({ field }) => <CustomSelect {...field} options={listHari} placeholder="Pilih hari mulai" />}
             />
-            {errors.hari?.mulai && <span className="text-red-500">{errors.hari.mulai.message}</span>}
             <span className="font-semibold">-</span>
-            <CustomSelect
+            <Controller
+              id="hari.selesai"
               name="hari.selesai"
-              options={listHari}
-              placeholder="Pilih hari"
-              {...register('hari.selesai', { required: 'Hari selesai is required' })}
-              onValueChange={value => setValue('hari.selesai', value)}
+              control={control}
+              rules={{ required: 'Hari Selesai wajib diisi' }}
+              render={({ field }) => <CustomSelect {...field} options={listHari} placeholder="Pilih hari selesai" />}
             />
-            {errors.hari?.selesai && <span className="text-red-500">{errors.hari.selesai.message}</span>}
           </div>
-        </div> */}
+          {combinedHariError && <span className="text-sm text-red-500">{`${combinedHariError} wajib diisi`}</span>}
+        </div>
         <div className="flex flex-col gap-3">
           <Label className="font-semibold" htmlFor="jam">
             Jam
           </Label>
-          {/* <div className="flex items-center justify-between gap-3" id="jam">
+          <div className="flex items-center justify-between gap-3" id="jam">
             <TimePickerInput
               id="jam.mulai"
-              {...register('jam.mulai', { required: 'Jam mulai is required' })}
-              onChange={value => setValue('jam.mulai', value.target.value)}
+              name="jam.mulai"
+              {...register('jam.mulai', { required: 'Jam Mulai wajib diisi' })}
             />
-            {errors.jam?.mulai && <span className="text-red-500">{errors.jam.mulai.message}</span>}
             <span className="font-semibold">-</span>
             <TimePickerInput
               id="jam.selesai"
-              {...register('jam.selesai', { required: 'Jam selesai is required' })}
-              onChange={value => setValue('jam.selesai', value.target.value)}
+              name="jam.selesai"
+              {...register('jam.selesai', { required: 'Jam Selesai wajib diisi' })}
             />
-            {errors.jam?.selesai && <span className="text-red-500">{errors.jam.selesai.message}</span>}
-          </div> */}
+          </div>
+          {combinedJamError && <span className="text-sm text-red-500">{`${combinedJamError} wajib diisi`}</span>}
         </div>
         <DialogFooter className="pt-10">
           <Button variant="outline" onClick={() => setIsOpen(false)}>

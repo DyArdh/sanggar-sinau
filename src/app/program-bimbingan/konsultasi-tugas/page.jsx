@@ -80,9 +80,12 @@ export default function TaskConsultation() {
                   </ol>
                 </div>
               </div>
-              <Button className="my-3 w-full rounded-full font-semibold md:my-5 md:w-2/3 md:text-lg">
-                Lihat Lokasi
-              </Button>
+              <Link
+                href={'https://maps.app.goo.gl/eYrizKAA9gqPVhnd7'}
+                className="my-3 w-full text-center"
+                target="_blank"
+              ></Link>
+              <Button className="rounded-full font-semibold md:my-5 md:w-2/3 md:text-lg">Lihat Lokasi</Button>
             </div>
           </div>
           <div className="mt-4 flex flex-col items-center rounded-sm bg-[#FF9270] px-6 py-3 md:mt-0 md:py-5">

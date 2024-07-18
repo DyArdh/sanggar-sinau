@@ -129,8 +129,8 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <Link href="/registrasi">
-                <Button className="rounded-[30px] px-8 font-semibold">Daftar</Button>
+              <Link href="/login">
+                <Button className="rounded-[30px] px-8 font-semibold">Login</Button>
               </Link>
             )}
           </div>
@@ -226,8 +226,8 @@ const Navbar = () => {
                   )}
                 </div>
               ) : (
-                <Link href="/registrasi">
-                  <Button className="w-full">Daftar</Button>
+                <Link href="/login">
+                  <Button className="w-full">Login</Button>
                 </Link>
               )}
             </>

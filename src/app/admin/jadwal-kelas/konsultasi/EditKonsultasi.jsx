@@ -1,131 +1,111 @@
-import { useState, useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { useToast } from '@/components/ui/use-toast';
 import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { TimePickerInput } from '@/components/TimePicker';
+import CustomSelect from './CustomSelect';
+import { useEffect } from 'react';
 
 export default function EditJadwalKonsultasi({ isOpen, setIsOpen, onSubmit, initialData }) {
-  const [formData, setFormData] = useState({
-    sesi: '',
-    hari: {
-      mulai: '',
-      selesai: '',
-    },
-    jam: {
-      mulai: '',
-      selesai: '',
-    },
-  });
-
-  const listSesi = ['Sesi Siang', 'Sesi Sore', 'Sesi Malam'];
-  const listHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu'];
+  const {
+    control,
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm({ defaultValues: initialData });
 
   const { toast } = useToast();
 
   useEffect(() => {
-    if (initialData) {
-      setFormData(initialData);
+    if (isOpen && initialData) {
+      Object.keys(initialData).forEach(key => {
+        setValue(key, initialData[key]);
+      });
     }
-  }, [initialData]);
+  }, [isOpen, initialData, setValue]);
 
-  const handleChange = (name, value) => {
-    if (name.includes('hari') || name.includes('jam')) {
-      const [parent, child] = name.split('.');
-      setFormData(prevState => ({
-        ...prevState,
-        [parent]: {
-          ...prevState[parent],
-          [child]: typeof value === 'object' ? value.target.value : value,
-        },
-      }));
-    } else {
-      setFormData(prevState => ({
-        ...prevState,
-        [name]: typeof value === 'object' ? value.target.value : value,
-      }));
-    }
-  };
+  useEffect(() => {
+    reset();
+    clearErrors();
+  }, [isOpen, reset, clearErrors]);
 
-  const handleSubmit = () => {
-    onSubmit(formData);
+  const listSesi = ['Sesi Siang', 'Sesi Sore', 'Sesi Malam'];
+  const listHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu'];
+
+  const combinedHariError = [errors.hari?.mulai?.message, errors.hari?.selesai?.message].filter(Boolean).join(' dan ');
+  const combinedJamError = [errors.jam?.mulai?.message, errors.jam?.selesai?.message].filter(Boolean).join(' dan ');
+
+  const onSubmitForm = data => {
+    onSubmit(data);
     toast({
-      description: 'Jadwal kelas telah diperbarui',
+      description: 'Jadwal kelas telah diubah',
       className: 'bg-green-500 text-white font-medium',
     });
+    setIsOpen(false);
+  };
+
+  const handleCancel = () => {
     setIsOpen(false);
   };
 
   return (
     <DialogWrapper isOpen={isOpen} setIsOpen={setIsOpen}>
       <DialogTitle className="mt-5 text-xl">Edit Jadwal Kelas</DialogTitle>
-      <DialogDescription>Silahkan perbarui data dibawah ini</DialogDescription>
-      <div className="flex flex-col space-y-5 pt-3">
+      <DialogDescription>Silahkan ubah data dibawah ini</DialogDescription>
+      <form onSubmit={handleSubmit(onSubmitForm)} className="flex flex-col space-y-5 pt-3">
         <div className="flex flex-col gap-3">
           <Label htmlFor="sesi" className="font-semibold">
             Sesi
           </Label>
-          <Select
-            id="sesi"
+          <Controller
             name="sesi"
-            defaultValue={formData.sesi}
-            onValueChange={value => handleChange('sesi', value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Pilih sesi" />
-            </SelectTrigger>
-            <SelectContent>
-              {listSesi.map((sesi, index) => (
-                <SelectItem key={index} value={sesi}>
-                  {sesi}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            control={control}
+            rules={{ required: 'Sesi wajib diisi' }}
+            render={({ field }) => (
+              <CustomSelect {...field} options={listSesi} placeholder="Pilih sesi" initialData={initialData.sesi} />
+            )}
+          />
+          {errors.sesi && <span className="text-sm text-red-500">{errors.sesi.message}</span>}
         </div>
         <div className="flex flex-col gap-3">
           <Label htmlFor="hari" className="font-semibold">
             Hari
           </Label>
           <div className="flex items-center justify-between gap-3">
-            <Select
-              id="hari.mulai"
+            <Controller
               name="hari.mulai"
-              defaultValue={formData.hari.mulai}
-              onValueChange={value => handleChange('hari.mulai', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih hari" />
-              </SelectTrigger>
-              <SelectContent>
-                {listHari.map((hari, index) => (
-                  <SelectItem key={index} value={hari}>
-                    {hari}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              control={control}
+              rules={{ required: 'Hari Mulai wajib diisi' }}
+              render={({ field }) => (
+                <CustomSelect
+                  {...field}
+                  options={listHari}
+                  placeholder="Pilih hari mulai"
+                  initialData={initialData.hari?.mulai}
+                />
+              )}
+            />
             <span className="font-semibold">-</span>
-            <Select
-              id="hari.selesai"
+            <Controller
               name="hari.selesai"
-              defaultValue={formData.hari.selesai}
-              onValueChange={value => handleChange('hari.selesai', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih hari" />
-              </SelectTrigger>
-              <SelectContent>
-                {listHari.map((hari, index) => (
-                  <SelectItem key={index} value={hari}>
-                    {hari}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              control={control}
+              rules={{ required: 'Hari Selesai wajib diisi' }}
+              render={({ field }) => (
+                <CustomSelect
+                  {...field}
+                  options={listHari}
+                  placeholder="Pilih hari selesai"
+                  initialData={initialData.hari?.selesai}
+                />
+              )}
+            />
           </div>
+          {combinedHariError && <span className="text-sm text-red-500">{`${combinedHariError} wajib diisi`}</span>}
         </div>
         <div className="flex flex-col gap-3">
           <Label className="font-semibold" htmlFor="jam">
@@ -135,25 +115,24 @@ export default function EditJadwalKonsultasi({ isOpen, setIsOpen, onSubmit, init
             <TimePickerInput
               id="jam.mulai"
               name="jam.mulai"
-              value={formData.jam.mulai}
-              onChange={value => handleChange('jam.mulai', value)}
+              {...register('jam.mulai', { required: 'Jam Mulai wajib diisi' })}
             />
             <span className="font-semibold">-</span>
             <TimePickerInput
               id="jam.selesai"
               name="jam.selesai"
-              value={formData.jam.selesai}
-              onChange={value => handleChange('jam.selesai', value)}
+              {...register('jam.selesai', { required: 'Jam Selesai wajib diisi' })}
             />
           </div>
+          {combinedJamError && <span className="text-sm text-red-500">{`${combinedJamError} wajib diisi`}</span>}
         </div>
-      </div>
-      <DialogFooter className="pt-10">
-        <Button variant="outline" onClick={() => setIsOpen(false)}>
-          Batal
-        </Button>
-        <Button onClick={handleSubmit}>Simpan</Button>
-      </DialogFooter>
+        <DialogFooter className="pt-10">
+          <Button type="button" variant="outline" onClick={handleCancel}>
+            Batal
+          </Button>
+          <Button type="submit">Simpan Perubahan</Button>
+        </DialogFooter>
+      </form>
     </DialogWrapper>
   );
 }

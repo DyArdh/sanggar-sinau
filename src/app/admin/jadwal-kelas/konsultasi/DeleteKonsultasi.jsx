@@ -3,11 +3,11 @@ import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
-export default function DeleteJadwalKonsultasi({ isOpen, setIsOpen, onDelete }) {
+export default function DeleteJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
   const { toast } = useToast();
 
   const handleDelete = () => {
-    onDelete();
+    onSubmit();
     toast({
       description: 'Jadwal kelas telah dihapus',
       className: 'bg-green-500 text-white font-medium',

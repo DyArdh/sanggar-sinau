@@ -90,7 +90,9 @@ export default function Home() {
                     terdekat dari rumah.
                   </p>
                 </div>
-                <Button className="bg-primary">Cek Lokasi Terdekat!</Button>
+                <Link href={'https://maps.app.goo.gl/eYrizKAA9gqPVhnd7'} target="_blank">
+                  <Button className="bg-primary">Cek Lokasi Terdekat!</Button>
+                </Link>
               </div>
               <div className="rounded-[30px] border border-black border-opacity-50 px-6 py-7 text-center">
                 <Image src={Section3_2} className="rounded-[30px] md:max-w-[300px]" alt="Pilihan Program Bimbingan" />

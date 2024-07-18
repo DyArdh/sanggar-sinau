@@ -2,18 +2,18 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
+import Cookies from 'js-cookie';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useStore } from '@/stores/store';
 import Banner from '@/../public/banner_jadwal_kelas.png';
 import Footer from '@/components/Footer';
 import generateInvoiceCode from '@/lib/generateInvoiceID';
+import CustomSelect from '@/components/CustomSelect';
 
 export default function DaftarKelas() {
   const router = useRouter();
@@ -23,16 +23,19 @@ export default function DaftarKelas() {
     formState: { errors },
     control,
   } = useForm();
-  const { isLogin } = useStore();
 
-  // useEffect(() => {
-  //   if (!isLogin && typeof window !== 'undefined') {
-  //     router.push('/login');
-  //   }
-  // }, [isLogin, router]);
+  const listKelas = ['PAUD', 'TK', 'SD/MI'];
+  const listProgram = ['Tatap Muka', 'Konsultasi Tugas'];
 
   const onSubmit = data => {
     console.log(data);
+    const loggedInAccount = Cookies.get('loggedInAccount');
+
+    if (!loggedInAccount) {
+      router.push('/login');
+      return;
+    }
+
     const invoiceCode = generateInvoiceCode();
     router.push(`/daftar-kelas/${invoiceCode}`);
   };
@@ -154,23 +157,15 @@ export default function DaftarKelas() {
                     Kategori Kelas
                   </Label>
                   <Controller
-                    name="kelas"
+                    id="kategori_kelas"
+                    name="kategori_kelas"
                     control={control}
-                    defaultValue=""
+                    rules={{ required: 'Kategori kelas wajib diisi' }}
                     render={({ field }) => (
-                      <Select {...field}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilih Kategori Kelas" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="PAUD">PAUD</SelectItem>
-                          <SelectItem value="TK">TK</SelectItem>
-                          <SelectItem value="SD/MI">SD/MI</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <CustomSelect {...field} options={listKelas} placeholder="Pilih Kategori Kelas" />
                     )}
                   />
-                  {errors.kelas && <p className="text-sm text-red-500">{errors.kelas.message}</p>}
+                  {errors.kategori_kelas && <p className="text-sm text-red-500">{errors.kategori_kelas.message}</p>}
                 </div>
                 <div className="flex flex-col gap-2 md:w-72">
                   <Label htmlFor="telp" className="text-sm font-semibold md:text-base">
@@ -190,19 +185,12 @@ export default function DaftarKelas() {
                     Program Bimbingan
                   </Label>
                   <Controller
+                    id="program_bimbingan"
                     name="program_bimbingan"
                     control={control}
-                    defaultValue=""
+                    rules={{ required: 'Program bimbingan wajib diisi' }}
                     render={({ field }) => (
-                      <Select {...field} name="program_bimbingan" id="program_bimbingan">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Pilihan Tipe Program" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Tatap Muka Rutin">Tatap Muka Rutin</SelectItem>
-                          <SelectItem value="Konsultasi Tugas">Konsultasi Tugas</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <CustomSelect {...field} options={listProgram} placeholder="Pilih Program Bimbingan" />
                     )}
                   />
                   {errors.program_bimbingan && (
