@@ -1,13 +1,16 @@
+// Import Modules
 import { useState, useEffect } from 'react';
+
+// Import Components
 import { useToast } from '@/components/ui/use-toast';
-import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export default function EditStatus({ isOpen, setIsOpen, onSubmit, initialData }) {
+import DialogWrapper from '@/components/DialogWrapper';
+
+export default function EditVerifikasiPendaftaran({ isOpen, setIsOpen, onSubmit, initialData }) {
   const [formData, setFormData] = useState({
     status: '',
   });
@@ -20,11 +23,10 @@ export default function EditStatus({ isOpen, setIsOpen, onSubmit, initialData })
     }
   }, [initialData]);
 
-  const handleChange = e => {
-    const { name, value } = e.target;
+  const handleChange = data => {
     setFormData(prevState => ({
       ...prevState,
-      [name]: value,
+      status: data,
     }));
   };
 
@@ -46,7 +48,7 @@ export default function EditStatus({ isOpen, setIsOpen, onSubmit, initialData })
           <Label htmlFor="status" className="font-semibold">
             Status
           </Label>
-          <Select defaultValue={formData.status} onValueChange={handleChange}>
+          <Select defaultValue={formData.status} name="status" onValueChange={handleChange}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Status" />
             </SelectTrigger>

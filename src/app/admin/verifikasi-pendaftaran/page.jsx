@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import DataTable from '@/components/DataTable';
 
-import EditStatus from './EditStatus';
+import EditVerifikasiPendaftaran from '@/components/modals/EditVerifikasiPendaftaran';
 
 export default function VerifikasiPendaftaran() {
   const { pendaftaran } = useStore();
@@ -24,8 +24,10 @@ export default function VerifikasiPendaftaran() {
 
   const Columns = [
     {
-      accessorKey: 'id',
+      ad: 'id',
       header: 'No',
+      cell: ({ row, table }) =>
+        (table.getSortedRowModel()?.flatRows?.findIndex(flatRow => flatRow.id === row.id) || 0) + 1,
     },
     {
       accessorKey: 'nama_orangtua',
@@ -37,11 +39,11 @@ export default function VerifikasiPendaftaran() {
     },
     {
       accessorKey: 'jenjang',
-      header: 'jenjang',
+      header: 'Jenjang',
     },
     {
       accessorKey: 'program',
-      header: 'program',
+      header: 'Program',
     },
     {
       accessorKey: 'status',
@@ -99,7 +101,7 @@ export default function VerifikasiPendaftaran() {
           <DataTable columns={Columns} data={pendaftaran} />
         </div>
       </section>
-      <EditStatus
+      <EditVerifikasiPendaftaran
         isOpen={editProgramDialog}
         setIsOpen={setEditProgramDialog}
         onSubmit={handleEditProgramSubmit}
