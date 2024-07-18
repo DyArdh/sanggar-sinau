@@ -1,14 +1,14 @@
-import { useForm, Controller } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { useToast } from '@/components/ui/use-toast';
 import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import CustomSelect from '@/components/CustomSelect';
 import { TimePickerInput } from '@/components/TimePicker';
-import CustomSelect from './CustomSelect';
 
-export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
+export default function AddJadwal({ isOpen, setIsOpen, onSubmit }) {
   const {
     control,
     register,
@@ -17,7 +17,7 @@ export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
     clearErrors,
     formState: { errors },
   } = useForm();
-  
+
   const { toast } = useToast();
 
   const listSesi = ['Sesi Siang', 'Sesi Sore', 'Sesi Malam'];

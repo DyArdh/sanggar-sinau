@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-const TimePickerInput = React.forwardRef(({ className, ...props }, ref) => {
+const TimePickerInput = React.forwardRef(({ className, value, onChange, ...props }, ref) => {
   return (
     <div className="relative w-full">
       <div className="pointer-events-none absolute inset-y-0 end-0 top-0 flex items-center pe-3.5">
@@ -27,6 +27,8 @@ const TimePickerInput = React.forwardRef(({ className, ...props }, ref) => {
           className
         )}
         ref={ref}
+        value={value}
+        onChange={onChange}
         {...props}
       />
     </div>

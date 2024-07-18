@@ -31,8 +31,10 @@ export default function JadwalKonsultasi() {
 
   const Columns = [
     {
-      accessorKey: 'id',
+      id: 'id',
       header: 'No',
+      cell: ({ row, table }) =>
+        (table.getSortedRowModel()?.flatRows?.findIndex(flatRow => flatRow.id === row.id) || 0) + 1,
     },
     {
       accessorKey: 'sesi',

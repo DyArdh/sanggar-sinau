@@ -1,24 +1,37 @@
 import { useForm, Controller } from 'react-hook-form';
-import { useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import DialogWrapper from '@/components/DialogWrapper';
 import { DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { TimePickerInput } from '@/components/TimePicker';
-import CustomSelect from './CustomSelect';
+import CustomSelect from '@/components/CustomSelect';
+import { useEffect } from 'react';
 
-export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
+export default function EditJadwal({ isOpen, setIsOpen, onSubmit, initialData }) {
   const {
     control,
-    register,
     handleSubmit,
+    setValue,
     reset,
     clearErrors,
     formState: { errors },
-  } = useForm();
-  
+  } = useForm({ defaultValues: initialData });
+
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isOpen && initialData) {
+      Object.keys(initialData).forEach(key => {
+        setValue(key, initialData[key]);
+      });
+    }
+  }, [isOpen, initialData, setValue]);
+
+  useEffect(() => {
+    reset(initialData);
+    clearErrors();
+  }, [isOpen, reset, clearErrors, initialData]);
 
   const listSesi = ['Sesi Siang', 'Sesi Sore', 'Sesi Malam'];
   const listHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu'];
@@ -26,35 +39,35 @@ export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
   const combinedHariError = [errors.hari?.mulai?.message, errors.hari?.selesai?.message].filter(Boolean).join(' dan ');
   const combinedJamError = [errors.jam?.mulai?.message, errors.jam?.selesai?.message].filter(Boolean).join(' dan ');
 
-  useEffect(() => {
-    reset();
-    clearErrors();
-  }, [isOpen, reset, clearErrors]);
-
   const onSubmitForm = data => {
     onSubmit(data);
     toast({
-      description: 'Jadwal kelas telah ditambahkan',
+      description: 'Jadwal kelas telah diubah',
       className: 'bg-green-500 text-white font-medium',
     });
     setIsOpen(false);
   };
 
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
+
   return (
     <DialogWrapper isOpen={isOpen} setIsOpen={setIsOpen}>
-      <DialogTitle className="mt-5 text-xl">Tambah Jadwal Kelas</DialogTitle>
-      <DialogDescription>Silahkan isi data dibawah ini</DialogDescription>
+      <DialogTitle className="mt-5 text-xl">Edit Jadwal Kelas</DialogTitle>
+      <DialogDescription>Silahkan perbarui data dibawah ini</DialogDescription>
       <form onSubmit={handleSubmit(onSubmitForm)} className="flex flex-col space-y-5 pt-3">
         <div className="flex flex-col gap-3">
           <Label htmlFor="sesi" className="font-semibold">
             Sesi
           </Label>
           <Controller
-            id="sesi"
             name="sesi"
             control={control}
             rules={{ required: 'Sesi wajib diisi' }}
-            render={({ field }) => <CustomSelect {...field} options={listSesi} placeholder="Pilih sesi" />}
+            render={({ field }) => (
+              <CustomSelect {...field} options={listSesi} initialData={initialData?.sesi} placeholder="Pilih sesi" />
+            )}
           />
           {errors.sesi && <span className="text-sm text-red-500">{errors.sesi.message}</span>}
         </div>
@@ -64,19 +77,31 @@ export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
           </Label>
           <div className="flex items-center justify-between gap-3">
             <Controller
-              id="hari.mulai"
               name="hari.mulai"
               control={control}
               rules={{ required: 'Hari Mulai wajib diisi' }}
-              render={({ field }) => <CustomSelect {...field} options={listHari} placeholder="Pilih hari mulai" />}
+              render={({ field }) => (
+                <CustomSelect
+                  {...field}
+                  options={listHari}
+                  initialData={initialData.hari?.mulai}
+                  placeholder="Pilih hari mulai"
+                />
+              )}
             />
             <span className="font-semibold">-</span>
             <Controller
-              id="hari.selesai"
               name="hari.selesai"
               control={control}
               rules={{ required: 'Hari Selesai wajib diisi' }}
-              render={({ field }) => <CustomSelect {...field} options={listHari} placeholder="Pilih hari selesai" />}
+              render={({ field }) => (
+                <CustomSelect
+                  {...field}
+                  options={listHari}
+                  initialData={initialData.hari?.selesai}
+                  placeholder="Pilih hari selesai"
+                />
+              )}
             />
           </div>
           {combinedHariError && <span className="text-sm text-red-500">{`${combinedHariError} wajib diisi`}</span>}
@@ -86,25 +111,31 @@ export default function AddJadwalKonsultasi({ isOpen, setIsOpen, onSubmit }) {
             Jam
           </Label>
           <div className="flex items-center justify-between gap-3" id="jam">
-            <TimePickerInput
-              id="jam.mulai"
+            <Controller
               name="jam.mulai"
-              {...register('jam.mulai', { required: 'Jam Mulai wajib diisi' })}
+              control={control}
+              rules={{ required: 'Jam Mulai wajib diisi' }}
+              render={({ field }) => (
+                <TimePickerInput {...field} value={field.value || ''} onChange={e => field.onChange(e.target.value)} />
+              )}
             />
             <span className="font-semibold">-</span>
-            <TimePickerInput
-              id="jam.selesai"
+            <Controller
               name="jam.selesai"
-              {...register('jam.selesai', { required: 'Jam Selesai wajib diisi' })}
+              control={control}
+              rules={{ required: 'Jam Selesai wajib diisi' }}
+              render={({ field }) => (
+                <TimePickerInput {...field} value={field.value || ''} onChange={e => field.onChange(e.target.value)} />
+              )}
             />
           </div>
           {combinedJamError && <span className="text-sm text-red-500">{`${combinedJamError} wajib diisi`}</span>}
         </div>
         <DialogFooter className="pt-10">
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <Button type="button" variant="outline" onClick={handleCancel}>
             Batal
           </Button>
-          <Button type="submit">Simpan</Button>
+          <Button type="submit">Simpan Perubahan</Button>
         </DialogFooter>
       </form>
     </DialogWrapper>

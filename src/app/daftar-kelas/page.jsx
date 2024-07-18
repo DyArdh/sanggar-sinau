@@ -8,7 +8,6 @@ import Cookies from 'js-cookie';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import Banner from '@/../public/banner_jadwal_kelas.png';
 import Footer from '@/components/Footer';
@@ -77,7 +76,7 @@ export default function DaftarKelas() {
                     className="mt-3 w-full md:w-[560px]"
                     width="560"
                     height="315"
-                    src="https://www.youtube.com/embed/WmijSTTxOLs?si=GI5gTBP0ckp9suuh"
+                    src="https://www.youtube.com/embed/z2QpbDPE_jg?si=NezZ1i71MqxqCvAm"
                     title="YouTube video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"

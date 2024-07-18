@@ -1,12 +1,16 @@
 'use client';
 
+// Import Modules
 import { useState } from 'react';
 import { MoreHorizontal } from 'lucide-react';
 
+// Import Global State
 import { useStore } from '@/stores/store';
 
+// Import Components
 import PenToSquare from '@/components/icons/PenToSquare';
 import TrashCan from '@/components/icons/TrashCan';
+import Plus from '@/components/icons/Plus';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,12 +19,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import DataTable from '@/components/DataTable';
-import Plus from '@/components/icons/Plus';
 
-import AddJadwal from './AddJadwal';
-import EditJadwal from './EditJadwal';
-import DeleteJadwal from './DeleteJadwal';
+import DataTable from '@/components/DataTable';
+import AddJadwal from './AddTatapMuka';
+import EditJadwal from './EditTatapMuka';
+import DeleteJadwal from './DeleteTatapMuka';
 
 export default function JadwalTatapMuka() {
   const { jadwalKelas } = useStore();
@@ -31,8 +34,10 @@ export default function JadwalTatapMuka() {
 
   const Columns = [
     {
-      accessorKey: 'id',
+      id: 'id',
       header: 'No',
+      cell: ({ row, table }) =>
+        (table.getSortedRowModel()?.flatRows?.findIndex(flatRow => flatRow.id === row.id) || 0) + 1,
     },
     {
       accessorKey: 'sesi',
